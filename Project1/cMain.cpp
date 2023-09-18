@@ -1,243 +1,113 @@
 #include <stdio.h>
 #include <Windows.h>
 
-void SetPosition(int x, int y);
-void SetColor(int color);
-void HideCursor();
+#define BufferWidth 80
+#define BufferHeight 40
 
-int map[40][40] =
-{
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-};
+HANDLE hBuffer[2]; // 창 두개를 제어하는 핸들
+int screenIndex;   // hBuffer[screenIndex], screenIndex == 0 or 1
 
-
-#pragma region Enum
-enum Color
-{
-	BLACK,
-	BLUE,
-	GREEN,
-	CYAN,
-	RED,
-	MAGENTA,
-	BROWN,
-	LIGHTGRAY,
-	DARKGRAY,
-	LIGHTBLUE,
-	LIGHTGREEN,
-	LIGHTCYAN,
-	LIGHTRED,
-	LIGHTMAGENTA,
-	YELLOW,
-	WHITE,
-
-};
-#pragma endregion
-
-typedef struct Obj
-{
-	int x;
-	int y;
-	int h;
-	Color color;
-	const char* shape;
-}Player;
-
-Player* player = nullptr;
-
-void Initialize();
-void Progress();
-void Render();
-void Release();
-
-bool jump = false;
-const float G = 9.81f;
-const float V0 = 15.0f;
-float time = 0.f;
+//버퍼 초기화
+void InitBuffer();
+//버퍼 활성화 [0]->[1] / [1]->[0]
+void FlipBuffer();
+//화면 지우는거
+void ClearBuffer();
+//화면 그려주기(x좌표, y좌표, 모양, 색깔)
+void WriteBuffer(int x, int y, const char* shape, int color);
+//버퍼 해제
+void ReleaseBuffer();
 
 int main() {
-	HideCursor();
-	Initialize();
+	InitBuffer();
 
 	while (true)
 	{
-		system("cls");
-		Progress();
-		Render();
+		WriteBuffer(10, 10, "Hello world", 13);
 
-		Sleep(50);	//1000ms == 1초 //50ms == 0.05초
+		FlipBuffer();
+		ClearBuffer();
+
+		Sleep(50);
 	}
 
-	Release();
-
+	ReleaseBuffer();
 	return 0;
 }
 
-#pragma region GAME
-void Initialize() {
-	player = (Player*)malloc(sizeof(Player));
-	player->x = 10;
-	player->y = 38;
-	player->h = player->y;
-	player->color = YELLOW;
-	player->shape = "옷";
-}
+void InitBuffer() {
+	//현재 스크린 index값은 0
+	screenIndex = 0;
 
+	//size.x = 80, size.y = 40 : 화면 크기
+	COORD size = { BufferWidth, BufferHeight };
 
+	//창 크기 왼쪽 : 0, 위쪽 : 0, 오른쪽 : 80 - 1, 아래쪽 : 40 - 1 
+	SMALL_RECT rect = { 0, 0, BufferWidth - 1, BufferHeight - 1 };
 
-void Progress() {
-	if (GetAsyncKeyState(VK_LEFT))
-	{
-		player->x--;
-	}
+	//0번 버퍼 만들기
+	hBuffer[0] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+	//0번 화면 버퍼 사이즈 설정(만든 버퍼 주소, 크기)
+	SetConsoleScreenBufferSize(hBuffer[0], size);
+	//0번 창 사이즈 설정
+	SetConsoleWindowInfo(hBuffer[0], TRUE, &rect);
 
-	if (GetAsyncKeyState(VK_RIGHT))
-	{
-		player->x++;
-	}
+	//1번 버퍼 만들기
+	hBuffer[1] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+	//1번 화면 버퍼 사이즈 설정(만든 버퍼 주소, 크기)
+	SetConsoleScreenBufferSize(hBuffer[1], size);
+	//1번 창 사이즈 설정
+	SetConsoleWindowInfo(hBuffer[1], TRUE, &rect);
 
-	if (GetAsyncKeyState(VK_SPACE))
-	{
-		jump = true;
-		time = 0.0f;
-		player->h = player->y;
-	}
-
-	if (jump)
-	{
-		int pos1 = player->h - V0 * time + 0.5f * G * time * time; // 이전
-		time += 0.2f;	// time 증가 
-		int pos2 = player->h - V0 * time + 0.5f * G * time * time; // 대입
-
-		int distance = pos2 - pos1;
-
-		bool collision = false;
-
-		if (distance > 0)
-		{
-			for (int i = 0; i < distance; i++)
-			{
-				if (map[player->y + i][player->x] == 1)
-				{
-					collision = true;
-					player->h = player->y + i - 1;
-
-					break;
-				}
-			}
-		}
-
-		if (collision)
-		{
-			jump = false;
-			player->y = player->h;
-		}
-		else
-		{
-			player->y += distance;
-		}
-
-		if (player->y > player->h)
-		{
-			jump = false;
-			player->y = player->h;
-		}
-	}
-
-
-}
-void Render() {
-	for (int y = 0; y < 40; y++)
-	{
-		for (int x = 0; x < 40; x++)
-		{
-			switch (map[y][x])
-			{
-			case 1:
-				SetPosition(x, y);
-				SetColor(WHITE);
-				printf("■");
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	SetPosition(player->x, player->y);
-	SetColor(player->color);
-	printf(player->shape);
-}
-void Release() {
-	if (player != nullptr)
-	{
-		free(player);
-		player = nullptr;
-	}
-}
-#pragma endregion
-
-#pragma region WIN_API
-
-//깜박깜박 거리는 커서 없애주는 함수
-void HideCursor() {
+	//커서 정보 등록 : 깜박이는 커서 안보이게
 	CONSOLE_CURSOR_INFO info;
-	info.dwSize = 1;
-	info.bVisible = false;
+	info.dwSize = 1;		//커서 크기
+	info.bVisible = FALSE; 	//커서 안보이게
 
-	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
+	//0 & 1 각각의 버퍼에 커서 정보 등록
+	SetConsoleCursorInfo(hBuffer[0], &info);
+	SetConsoleCursorInfo(hBuffer[1], &info);
+
 }
 
-//X,Y값 받아서 커서의 좌표를 이동시켜주는 함수
-void SetPosition(int x, int y) {
-	COORD pos;
-	pos.X = x * 2;
-	pos.Y = y;
+void FlipBuffer() {
+	//해당 버퍼 활성화
+	SetConsoleActiveScreenBuffer(hBuffer[screenIndex]);
 
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+	//[0]->[1] /[1]->[0]
+	screenIndex = !screenIndex;
 }
 
-//color값 받아서 색깔 바꿔주는 아이
-void SetColor(int color) {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+void ClearBuffer() {
+	//시작 위치
+	//pos.X = 0, pos.Y = 0
+	COORD pos = { 0,0 };
+	//매개변수 채울려고
+	DWORD dw;
+
+	//화면을 ' '로 채움
+	FillConsoleOutputCharacter(hBuffer[screenIndex], ' ', BufferWidth * BufferHeight, pos, &dw);
 }
-#pragma endregion
+
+void WriteBuffer(int x, int y, const char* shape, int color) {
+	//위치설정
+	//pos.X = x * 2, pos.Y = y
+	COORD pos = { x * 2, y };
+
+	//커서 위치 이동
+	SetConsoleCursorPosition(hBuffer[screenIndex], pos);
+
+	//색깔 바꿔주고
+	SetConsoleTextAttribute(hBuffer[screenIndex], color);
+
+	//매개변수 채우기 위해
+	DWORD dw;
+	//해당 버퍼에 쓰기
+	WriteFile(hBuffer[screenIndex], shape, strlen(shape), &dw, NULL);
+}
+
+void ReleaseBuffer() {
+	//버퍼 닫기
+	CloseHandle(hBuffer[0]);
+	CloseHandle(hBuffer[1]);
+}
