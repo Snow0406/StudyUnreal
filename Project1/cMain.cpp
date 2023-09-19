@@ -1,113 +1,343 @@
 #include <stdio.h>
 #include <Windows.h>
 
+#pragma region DoubleBuffer
 #define BufferWidth 80
 #define BufferHeight 40
 
-HANDLE hBuffer[2]; // 창 두개를 제어하는 핸들
-int screenIndex;   // hBuffer[screenIndex], screenIndex == 0 or 1
+HANDLE hBuffer[2];
+int screenIndex;
 
-//버퍼 초기화
 void InitBuffer();
-//버퍼 활성화 [0]->[1] / [1]->[0]
 void FlipBuffer();
-//화면 지우는거
 void ClearBuffer();
-//화면 그려주기(x좌표, y좌표, 모양, 색깔)
 void WriteBuffer(int x, int y, const char* shape, int color);
-//버퍼 해제
 void ReleaseBuffer();
+#pragma endregion
+
+enum Dir
+{
+	UP,
+	DOWN,
+};
+
+enum Color
+{
+	BLACK,
+	BLUE,
+	GREEN,
+	CYAN,
+	RED,
+	MAGENTA,
+	BROWN,
+	LIGHTGRAY,
+	DARKGRAY,
+	LIGHTBLUE,
+	LIGHTGREEN,
+	LIGHTCYAN,
+	LIGHTRED,
+	LIGHTMAGENTA,
+	YELLOW,
+	WHITE,
+
+};
+
+#define BulletCount 20
+#define EnemyCount 10
+
+struct Bullet
+{
+	bool act;
+	int x;
+	int y;
+	Color color;
+	const char* shape;
+};
+
+typedef struct Obj
+{
+	bool act;
+	int aniIndex;
+	Dir dir;
+	int x;
+	int y;
+	Color color;
+	const char* shape[10][3];
+}Player, Enemy;
+
+Player* player = nullptr;
+Enemy* enemies[EnemyCount] = {};
+Bullet* bullets[BulletCount] = {};
+
+int spawnTime = 0;
+
+void Initialize();
+void Progress();
+void Render();
+void Release();
 
 int main() {
 	InitBuffer();
+	Initialize();
 
 	while (true)
 	{
-		WriteBuffer(10, 10, "Hello world", 13);
+		//Todo
+		Progress();
+		Render();
 
 		FlipBuffer();
 		ClearBuffer();
 
-		Sleep(50);
+		Sleep(30);
 	}
 
+	Release();
 	ReleaseBuffer();
+
 	return 0;
 }
 
+void Initialize() {
+	player = (Player*)malloc(sizeof(Player));
+	player->x = 10;
+	player->y = 10;
+	player->aniIndex = 0;
+	player->color = WHITE;
+	player->shape[0][0] = "   -----|-----";
+	player->shape[0][1] = "*>=====[_]L)";
+	player->shape[0][2] = "      -'-`-";
+	player->shape[1][0] = "    ----|----";
+	player->shape[1][1] = "*>=====[_]L)";
+	player->shape[1][2] = "      -'-`-";
+	player->shape[2][0] = "     ---|---";
+	player->shape[2][1] = "*>=====[_]L)";
+	player->shape[2][2] = "      -'-`-";
+	player->shape[3][0] = "      --|--";
+	player->shape[3][1] = "*>=====[_]L)";
+	player->shape[3][2] = "      -'-`-";
+	player->shape[4][0] = "       -|-";
+	player->shape[4][1] = "*>=====[_]L)";
+	player->shape[4][2] = "      -'-`-";
+	player->shape[5][0] = "        -";
+	player->shape[5][1] = "*>=====[_]L)";
+	player->shape[5][2] = "      -'-`-";
+	player->shape[6][0] = "       -|-";
+	player->shape[6][1] = "*>=====[_]L)";
+	player->shape[6][2] = "      -'-`-";
+	player->shape[7][0] = "      --|--";
+	player->shape[7][1] = "*>=====[_]L)";
+	player->shape[7][2] = "      -'-`-";
+	player->shape[8][0] = "     ---|---";
+	player->shape[8][1] = "*>=====[_]L)";
+	player->shape[8][2] = "      -'-`-";
+	player->shape[9][0] = "    ----|----";
+	player->shape[9][1] = "*>=====[_]L)";
+	player->shape[9][2] = "      -'-`-";
+
+
+	for (int i = 0; i < BulletCount; i++)
+	{
+		bullets[i] = (Bullet*)malloc(sizeof(Bullet));
+		bullets[i]->act = false;
+		bullets[i]->x = i;
+		bullets[i]->y = 0;
+		bullets[i]->color = LIGHTCYAN;
+		bullets[i]->shape = "●";
+	}
+	for (int i = 0; i < EnemyCount; i++)
+	{
+		enemies[i] = (Enemy*)malloc(sizeof(Enemy));
+		enemies[i]->act = false;
+		enemies[i]->x = 0;
+		enemies[i]->y = 0;
+		enemies[i]->color = LIGHTRED;
+		enemies[i]->shape[0][0] = "-----|-----";
+		enemies[i]->shape[0][1] = "  (J[_]=====<*";
+		enemies[i]->shape[0][2] = "   -'-`-";
+	}
+}
+
+void Progress() {
+	if (GetAsyncKeyState(VK_LEFT))
+	{
+		player->x--;
+	}
+
+	if (GetAsyncKeyState(VK_RIGHT))
+	{
+		player->x++;
+	}
+
+	if (GetAsyncKeyState(VK_UP))
+	{
+		player->y--;
+	}
+
+	if (GetAsyncKeyState(VK_DOWN))
+	{
+		player->y++;
+	}
+
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		for (int i = 0; i < BulletCount; i++)
+		{
+			if (!bullets[i]->act)
+			{
+				bullets[i]->x = player->x + 6;
+				bullets[i]->y = player->y + 1;
+				bullets[i]->act = true;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < BulletCount; i++)
+	{
+		if (bullets[i]->act)
+		{
+			bullets[i]->x++;
+
+			if (bullets[i]->x > 38)
+			{
+				bullets[i]->act = false;
+				bullets[i]->x = i;
+				bullets[i]->y = 0;
+			}
+		}
+	}
+
+	spawnTime++;
+	if (spawnTime > 30)
+	{
+		spawnTime = 0;
+		for (int i = 0; i < EnemyCount; i++)
+		{
+			if (enemies[i]->act == false)
+			{
+				enemies[i]->act = true;
+				enemies[i]->x = 30;
+				enemies[i]->y = rand() % 37;
+				enemies[i]->dir = (Dir)(rand() % 2);
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < EnemyCount; i++)
+	{
+		if (enemies[i]->act)
+		{
+			enemies[i]->x--;
+			switch (enemies[i]->dir)
+			{
+			case UP:
+				enemies[i]->y--;
+				break;
+			case DOWN:
+				enemies[i]->y++;
+				break;
+			default:
+				break;
+			}
+			if (enemies[i]->x <= 0 || enemies[i]->y <= 0 || enemies[i]->y >= 37)
+			{
+				enemies[i]->act = false;
+			}
+
+		}
+	}
+
+
+}
+void Render() {
+	player->aniIndex++;
+	if (player->aniIndex >= 10)
+	{
+		player->aniIndex = 0;
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		WriteBuffer(player->x, player->y + i, player->shape[player->aniIndex][i], player->color);
+	}
+
+	for (int i = 0; i < BulletCount; i++)
+	{
+		WriteBuffer(bullets[i]->x, bullets[i]->y, bullets[i]->shape, bullets[i]->color);
+	}
+
+	for (int i = 0; i < EnemyCount; i++)
+	{
+		if (enemies[i]->act)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				WriteBuffer(enemies[i]->x, enemies[i]->y + j, enemies[i]->shape[0][j], enemies[i]->color);
+			}
+		}
+
+	}
+}
+void Release() {
+	if (player != nullptr)
+	{
+		free(player);
+		player = nullptr;
+	}
+}
+
+#pragma region DoubleBuffer
 void InitBuffer() {
-	//현재 스크린 index값은 0
 	screenIndex = 0;
 
-	//size.x = 80, size.y = 40 : 화면 크기
 	COORD size = { BufferWidth, BufferHeight };
 
-	//창 크기 왼쪽 : 0, 위쪽 : 0, 오른쪽 : 80 - 1, 아래쪽 : 40 - 1 
-	SMALL_RECT rect = { 0, 0, BufferWidth - 1, BufferHeight - 1 };
+	SMALL_RECT rect = { 0, 0, BufferWidth, BufferHeight };
 
-	//0번 버퍼 만들기
 	hBuffer[0] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
-	//0번 화면 버퍼 사이즈 설정(만든 버퍼 주소, 크기)
 	SetConsoleScreenBufferSize(hBuffer[0], size);
-	//0번 창 사이즈 설정
 	SetConsoleWindowInfo(hBuffer[0], TRUE, &rect);
 
-	//1번 버퍼 만들기
 	hBuffer[1] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
-	//1번 화면 버퍼 사이즈 설정(만든 버퍼 주소, 크기)
 	SetConsoleScreenBufferSize(hBuffer[1], size);
-	//1번 창 사이즈 설정
 	SetConsoleWindowInfo(hBuffer[1], TRUE, &rect);
 
-	//커서 정보 등록 : 깜박이는 커서 안보이게
 	CONSOLE_CURSOR_INFO info;
-	info.dwSize = 1;		//커서 크기
-	info.bVisible = FALSE; 	//커서 안보이게
+	info.dwSize = 1;
+	info.bVisible = FALSE;
 
-	//0 & 1 각각의 버퍼에 커서 정보 등록
 	SetConsoleCursorInfo(hBuffer[0], &info);
 	SetConsoleCursorInfo(hBuffer[1], &info);
 
 }
 
 void FlipBuffer() {
-	//해당 버퍼 활성화
 	SetConsoleActiveScreenBuffer(hBuffer[screenIndex]);
-
-	//[0]->[1] /[1]->[0]
 	screenIndex = !screenIndex;
 }
 
 void ClearBuffer() {
-	//시작 위치
-	//pos.X = 0, pos.Y = 0
 	COORD pos = { 0,0 };
-	//매개변수 채울려고
 	DWORD dw;
 
-	//화면을 ' '로 채움
 	FillConsoleOutputCharacter(hBuffer[screenIndex], ' ', BufferWidth * BufferHeight, pos, &dw);
 }
 
 void WriteBuffer(int x, int y, const char* shape, int color) {
-	//위치설정
-	//pos.X = x * 2, pos.Y = y
 	COORD pos = { x * 2, y };
 
-	//커서 위치 이동
 	SetConsoleCursorPosition(hBuffer[screenIndex], pos);
-
-	//색깔 바꿔주고
 	SetConsoleTextAttribute(hBuffer[screenIndex], color);
 
-	//매개변수 채우기 위해
 	DWORD dw;
-	//해당 버퍼에 쓰기
 	WriteFile(hBuffer[screenIndex], shape, strlen(shape), &dw, NULL);
 }
 
 void ReleaseBuffer() {
-	//버퍼 닫기
 	CloseHandle(hBuffer[0]);
 	CloseHandle(hBuffer[1]);
 }
+
+#pragma endregion
