@@ -70,34 +70,47 @@ Enemy* enemies[EnemyCount] = {};
 Bullet* bullets[BulletCount] = {};
 
 int spawnTime = 0;
+bool status = true;
 
 void Initialize();
 void Progress();
 void Render();
 void Release();
+void GameOver();
+void HideCursor();
 
 int main() {
 	InitBuffer();
 	Initialize();
 
-	while (true)
+	while (status)
 	{
-		//Todo
-		Progress();
-		Render();
+			//Todo
+			Progress();
+			Render();
 
-		FlipBuffer();
-		ClearBuffer();
+			FlipBuffer();
+			ClearBuffer();
 
-		Sleep(30);
+			Sleep(30);
 	}
 
 	Release();
 	ReleaseBuffer();
+	HideCursor();
+
+	while (!status)
+	{
+		system("cls");
+
+		GameOver();
+
+		Sleep(1000);
+	}
 
 	return 0;
 }
-
+ 
 void Initialize() {
 	player = (Player*)malloc(sizeof(Player));
 	player->x = 10;
@@ -199,7 +212,7 @@ void Progress() {
 		{
 			bullets[i]->x++;
 
-			if (bullets[i]->x > 38)
+			if (bullets[i]->x > 38) //화면 밖 총알 나가면 false
 			{
 				bullets[i]->act = false;
 				bullets[i]->x = i;
@@ -249,8 +262,30 @@ void Progress() {
 		}
 	}
 
+	for (int i = 0; i < EnemyCount; i++) //총알 , 적 충돌
+	{
+		if (!enemies[i]->act) continue; //적이 false이면 return
 
+		for (int j = 0; j < BulletCount; j++)
+		{
+			if (bullets[i]->act)
+			{
+				if ((bullets[j]->x >= enemies[i]->x && bullets[j]->x <= enemies[i]->x + 7) && (bullets[j]->y >= enemies[i]->y && bullets[j]->y <= enemies[i]->y + 2))
+				{
+					enemies[i]->act = false;
+					bullets[j]->act = false;
+				}
+			}
+		}
+		//																															플레이어  위 y   /   아래 y      
+		if ((player->x + 6 >= enemies[i]->x && player->x + 6 <= enemies[i]->x + 7) && ((player->y >= enemies[i]->y && player->y <= enemies[i]->y + 2) || (player->y + 2 >= enemies[i]->y && player->y + 2 <= enemies[i]->y + 2)))
+		{
+			status = false;
+			break;
+		}
+	}
 }
+
 void Render() {
 	player->aniIndex++;
 	if (player->aniIndex >= 10)
@@ -286,6 +321,15 @@ void Release() {
 		free(player);
 		player = nullptr;
 	}
+}
+
+void GameOver() {
+	COORD pos = { 35, 10 };
+
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+
+	printf("[  GAME OVER  ]");
 }
 
 #pragma region DoubleBuffer
@@ -341,3 +385,11 @@ void ReleaseBuffer() {
 }
 
 #pragma endregion
+
+void HideCursor() {
+	CONSOLE_CURSOR_INFO info;
+	info.dwSize = 1;
+	info.bVisible = false;
+
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
+}
