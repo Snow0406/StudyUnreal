@@ -11,8 +11,8 @@ int main() {
 	Player* player = (Player*)malloc(sizeof(Player));
 	player->x = 0;
 	player->y = 10;
-
-	printf("%d, %d", player->x, player->y);
+	int num[] = { 1, 2, 3, 4, 5 };
+	printf("%d", num[1]);
 
 	return 0;
 }
