@@ -1,30 +1,27 @@
 ﻿using System;
 
-namespace StudyUnity
+namespace ConsoleApp1
 {
-    public static class ExtensionMethodClass
+    class MyClass
     {
-        public static string toSnow(this object input)
-        {
-            return "스노우 히히";
-        }
+        public int num;
+    }
+
+    struct MyStruct
+    {
+        public int num;
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            int num1 = 10;
-            int num2 = 20;
-            object num3 = 30;
+            MyStruct a = new MyStruct();
+            MyStruct b = a;
+            a.num = 10;
 
-            Set(num1, num2);
-            Console.WriteLine(num3.toSnow());
-        }
+            Console.WriteLine(b.num);
 
-        static void Set(int a = 1, int b = 2)
-        {
-            Console.WriteLine(a + b);
         }
     }
 }
