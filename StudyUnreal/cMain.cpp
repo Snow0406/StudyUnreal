@@ -104,17 +104,20 @@ void Collision();
 KeyState key = NONE;
 
 int main() {
-	Initialize();
 	HideCursor();
+	ULONGLONG deltatime = GetTickCount64();
+	Initialize();
+
 
 	while (true)
 	{
-		system("cls");
-
-		Progress();
-		Render();
-
-		Sleep(100);
+		if (deltatime + 50 <= GetTickCount64())
+		{
+			system("cls");
+			Progress();
+			Render();
+			deltatime = GetTickCount64();
+		}
 	}
 
 	Release();
