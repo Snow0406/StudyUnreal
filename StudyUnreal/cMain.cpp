@@ -1,253 +1,57 @@
-#include <stdio.h>
-#include <Windows.h>
+#include <iostream>
 
-#pragma region Enum
-enum Color
+struct Pet
 {
-	BLACK,
-	BLUE,
-	GREEN,
-	CYAN,
-	RED,
-	MAGENTA,
-	BROWN,
-	LIGHTGRAY,
-	DARKGRAY,
-	LIGHTBLUE,
-	LIGHTGREEN,
-	LIGHTCYAN,
-	LIGHTRED,
-	LIGHTMAGENTA,
-	YELLOW,
-	WHITE,
+	const char* name;
 
+	Pet(const char* _name)  //생성되었을때 호출되는 함수
+	{
+		name = _name;
+		std::cout << name << "생성" << std::endl;
+	}
+
+	~Pet() //소멸되었을때 호출되는 함수
+	{
+		std::cout << name << "소멸" << std::endl;
+	}
 };
 
-enum KeyState
+struct Player
 {
-	NONE,
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN,
-};
-#pragma endregion
+	const char* name;
+	Pet* pet;
 
-#pragma region WinAPI
+	Player(const char* _name)  //생성되었을때 호출되는 함수
+	{
+		name = _name;
+		pet = nullptr;
+		std::cout << name << "생성" << std::endl;
+	}
 
-void SetPosition(int x, int y);
-void SetColor(int color);
-void HideCursor();
-void Write(int x, int y, const char* shape, int color);
-
-#pragma endregion
-
-int map[40][40] =
-{
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	~Player() //소멸되었을때 호출되는 함수
+	{
+		if (pet != nullptr)
+		{
+			delete pet;
+			pet = nullptr;
+		}
+		std::cout << name << "소멸" << std::endl;
+	}
 };
 
-struct Obj
-{
-	int x;
-	int y;
-	Color color;
-	const char* shape[3];
-};
-Obj* player = nullptr;
-
-void Initialize();
-void Progress();
-void Render();
-void Release();
-void Collision();
-
-KeyState key = NONE;
 
 int main() {
-	HideCursor();
-	ULONGLONG deltatime = GetTickCount64();
-	Initialize();
+	Player* player = new Player("glgl");
+	Pet* pet = new Pet("댕댕이");
+
+	player->pet = pet;
+	player->pet->name = "멍멍이";
+
+	std::cout << pet->name << std::endl;
+
+	delete player;
+	player = nullptr;
 
 
-	while (true)
-	{
-		if (deltatime + 50 <= GetTickCount64())
-		{
-			system("cls");
-			Progress();
-			Render();
-			deltatime = GetTickCount64();
-		}
-	}
-
-	Release();
 	return 0;
 }
-
-void Initialize() {
-	player = (Obj*)malloc(sizeof(Obj));
-	player->x = 10;
-	player->y = 10;
-	player->color = BLUE;
-	player->shape[0] = "■■■■";
-	player->shape[1] = "■■■■";
-	player->shape[2] = "■■■■";
-
-}
-
-void Progress() {
-	if (GetAsyncKeyState(VK_LEFT))
-	{
-		player->x--;
-		key = LEFT;
-	}
-	if (GetAsyncKeyState(VK_RIGHT))
-	{
-		player->x++;
-		key = RIGHT;
-	}
-	if (GetAsyncKeyState(VK_UP))
-	{
-		player->y--;
-		key = UP;
-	}
-	if (GetAsyncKeyState(VK_DOWN))
-	{
-		player->y++;
-		key = DOWN;
-	}
-	Collision();
-}
-
-void Render() {
-	for (int y = 0; y < 40; y++)
-	{
-		for (int x = 0; x < 40; x++)
-		{
-			switch (map[y][x])
-			{
-			case 1:
-				Write(x, y, "■", WHITE);
-				break;
-			case 2:
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	for (int i = 0; i < 3; i++)
-	{
-		Write(player->x, player->y + i, player->shape[i], player->color);
-	}
-
-}
-
-void Release() {
-}
-
-void Collision() {
-	// 충돌 처리
-	int X[] = { player->x, player->x + 1, player->x + 2 , player->x + 3 };
-	int Y[] = { player->y, player->y + 1, player->y + 2 , player->y + 3 };
-
-	for (int i = 0; i < 4; i++) //X
-	{
-		for (int j = 0; j < 4; j++) //Y
-		{
-			if (map[X[i]][Y[j]] == 1) //만약 구조물과 만났다면
-			{
-				switch (key)
-				{
-					//키를 아무입력 안했을때 리턴
-				case NONE:
-					break;
-				case LEFT: player->x++;
-					break;
-				case RIGHT: player->x--;
-					break;
-				case UP: player->y++;
-					break;
-				case DOWN: player->y--;
-					break;
-
-				default:
-					break;
-				}
-			}
-
-		}
-	}
-}
-
-#pragma region WinAPI
-//깜박깜박 거리는 커서 없애주는 함수
-void HideCursor() {
-	CONSOLE_CURSOR_INFO info;
-	info.dwSize = 1;
-	info.bVisible = false;
-
-	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
-}
-
-//X,Y값 받아서 커서의 좌표를 이동시켜주는 함수
-void SetPosition(int x, int y) {
-	COORD pos;
-	pos.X = x * 2;
-	pos.Y = y;
-
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
-
-//color값 받아서 색깔 바꿔주는 아이
-void SetColor(int color) {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
-void Write(int x, int y, const char* shape, int color) {
-	SetColor(color);
-	SetPosition(x, y);
-	printf(shape);
-
-}
-#pragma endregion
