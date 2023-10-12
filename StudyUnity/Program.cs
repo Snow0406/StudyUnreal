@@ -2,36 +2,38 @@
 
 namespace StudyUnity
 {
-    class Animal
-    { }
-
-    class Cat : Animal
+    interface IToolManager
     {
-        public void Test()
-        {
-            Console.WriteLine("hello");
-        }
-
+        void Manage();
+    }
+    interface ITool : IToolManager
+    {
+        void UseTool();
     }
 
+    abstract class Player
+    {
+        public string name;
+        public int id;
+
+        public float hp;
+        public float mp;
+
+        abstract public void Move();
+    }
+
+    class Action : Player
+    {
+        public override void Move()
+        {
+            throw new NotImplementedException();
+        }
+    }
     class Program
     {
-        static void Test<T>(Animal p) where T : Animal
-        {
-            T cat = (T)p;
-        }
         static void Main(string[] args)
         {
-            Animal animal = new Cat();
-            if (animal is Cat a) {
-                Cat cat = (Cat)a;
-            }
-            if (animal is Cat) {
-                Cat cat = (Cat)animal;
-                Console.WriteLine("Right");
-            } else {
-                Console.WriteLine("False");
-            }
+            
         }
     }
 }
