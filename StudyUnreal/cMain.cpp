@@ -1,12 +1,10 @@
 #include <iostream>
-#include "Player.h"
+
+#define cout std::cout
+#define end std::endl
 
 int main() {
-	Player id1;
-	
-	id1.money = 5000;
 
-	std::cout << id1.GetUserID() << "´ÔÀÇ µ· : " << id1.money << std::endl;
-
+	cout << rand() << end
 	return 0;
 }

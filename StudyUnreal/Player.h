@@ -1,22 +1,47 @@
 #pragma once
 #include <iostream>
 
+#define cout std::cout
+#define end std::endl
+
 class Player
 {
-public:
-	int level = 1;
-	int money = 0;
-
-	Player();
-	~Player();
-
-	int GetUserID();
-
 private:
-	int userID = 1004;
+	const char* name;
+
+	int lv;
+	int exp;
+	int gold;
+	
+	float hp;
+	float atk;
+
+	int dieCount;
+public:
+	void LvUp();
+	void Attack();
+	void UseSkill(int num);
+
+	void GetMyInfo();
+
+	Player(const char* _name) {
+		this->name = _name;
+
+		this->lv = 1;
+		this->exp = 0;
+
+		this->hp = 100;
+		this->atk = 1;
+		this->gold = 0;
+
+		this->dieCount = 0;
+
+		cout << "[ " << name << "님 계정 생성 완료 ! ]" << end;
+	}
+	~Player() {
+		this->dieCount++;
+		cout << "[ " << name << "님 죽은 횟수 +1 ]" << end;
+	}
 };
 
-int Player::GetUserID() { return userID; }
-Player::Player() { std::cout << "캐릭터 생성" << std::endl; }
-Player::~Player() { std::cout << "캐릭터 삭제" << std::endl; }
 
