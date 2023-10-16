@@ -1,7 +1,6 @@
 #include "Player.h"
 
-#define cout std::cout
-#define end std::endl
+using namespace std;
 
 #define SKILL_MAX_NUM 1
 

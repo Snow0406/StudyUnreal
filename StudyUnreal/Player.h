@@ -1,8 +1,7 @@
 #pragma once
 #include <iostream>
 
-#define cout std::cout
-#define end std::endl
+using namespace std;
 
 class Player
 {
@@ -36,7 +35,7 @@ public:
 
 		this->dieCount = 0;
 
-		cout << "[ " << name << "님 계정 생성 완료 ! ]" << end;
+		cout  "[ " << name << "님 계정 생성 완료 ! ]" << end;
 	}
 	~Player() {
 		this->dieCount++;
