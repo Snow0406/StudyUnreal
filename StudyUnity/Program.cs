@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace StudyUnity
 {
@@ -6,18 +7,12 @@ namespace StudyUnity
     {
         static void Main(string[] args)
         {
-            int[] numbers = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add("name", "snow");
+            hashtable.Add("age", 18);
 
-            foreach (var number in numbers) {
-                Console.WriteLine(number);
-            }
-
-            Console.WriteLine("======================");
-
-            Array.Clear(numbers, 2, 3);
-
-            foreach (var number in numbers) {
-                Console.WriteLine(number);
+            foreach (string key in hashtable.Keys) {
+                Console.WriteLine(key);
             }
         }
     }
