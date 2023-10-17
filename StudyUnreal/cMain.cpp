@@ -29,7 +29,8 @@ public:
 int main()
 {
 	int a = 12;
-	Dog dog(a);
+	Animal* dog = new Dog;
+	dog = (Dog*)dog;
 
 	return 0;
 }
