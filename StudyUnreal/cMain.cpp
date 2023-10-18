@@ -2,35 +2,20 @@
 
 using namespace std;
 
-class Animal
+class Cat
 {
 public:
-	Animal() { cout << "Animal 持失" << endl; }
-	Animal(int& a)
-	{
-		a = 33;
-		cout << "Animal : " << a << endl;
-	}
-	~Animal() { cout << "Animal 社瑚" << endl; }
+	static int age;
 };
 
-class Dog : public Animal
-{
-public:
-	Dog() { cout << "Dog 持失" << endl; }
-	Dog(int& a)
-	{
-		//a?
-		cout << "Dog : " << a << endl;
-	}
-	~Dog() { cout << "Dog 社瑚" << endl; }
-};
+int Cat::age = 0;
 
 int main()
 {
-	int a = 12;
-	Animal* dog = new Dog;
-	dog = (Dog*)dog;
+	Cat a;
+	a.age = 2;
+
+	cout << a.age << endl;
 
 	return 0;
 }
