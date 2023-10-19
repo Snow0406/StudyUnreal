@@ -20,7 +20,6 @@ public:
 	void LvUp();
 	void Attack();
 	void UseSkill(int num);
-
 	void GetMyInfo();
 
 	Player(const char* _name) {
@@ -35,11 +34,12 @@ public:
 
 		this->dieCount = 0;
 
-		cout  "[ " << name << "´Ô °èÁ¤ »ý¼º ¿Ï·á ! ]" << end;
+		cout << "[ " << name << "´Ô °èÁ¤ »ý¼º ¿Ï·á ! ]" << endl;
 	}
+
 	~Player() {
 		this->dieCount++;
-		cout << "[ " << name << "´Ô Á×Àº È½¼ö +1 ]" << end;
+		cout << "[ " << name << "´Ô Á×Àº È½¼ö +1 ]" << endl;
 	}
 };
 

@@ -1,21 +1,21 @@
 #include <iostream>
+#include <Windows.h>
+#include "GameManager.h"
 
 using namespace std;
 
-class Cat
-{
-public:
-	static int age;
-};
-
-int Cat::age = 0;
+GameManager* gameManager;
 
 int main()
 {
-	Cat a;
-	a.age = 2;
+	while (true)
+	{
+		system("cls");
 
-	cout << a.age << endl;
+		gameManager->Progress();
+
+		Sleep(100);
+	}
 
 	return 0;
 }
