@@ -1,21 +1,20 @@
 #include <iostream>
 #include <Windows.h>
-#include "GameManager.h"
 
 using namespace std;
 
-GameManager* gameManager;
+class A
+{
+public:
+	A()
+	{
+		cout << "A"
+	}
+};
 
 int main()
 {
-	while (true)
-	{
-		system("cls");
-
-		gameManager->Progress();
-
-		Sleep(100);
-	}
+	auto a = 1;
 
 	return 0;
 }
