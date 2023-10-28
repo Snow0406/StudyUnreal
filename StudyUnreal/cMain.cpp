@@ -1,29 +1,30 @@
-#include "DoubleBuffer.h"
-#include "Stage.h"
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+void ClearData(T a)
+{
+	cout << sizeof(T) << endl;
+	if (a != nullptr)
+	{
+		delete a;
+		a = nullptr;
+	}
+}
 
 int main()
 {
-	auto doubleBuffer = DoubleBuffer::Get();
+	int* ip = new int;
+	float* fp = new float;
 
-	doubleBuffer->InitBuffer();
+	ClearData(ip);
+	ClearData(fp);
 
-	Stage stage;
-	stage.Initialize();
+	cout << "ip : " << ip << endl;
+	cout << "fp : " << fp << endl;
 
-	while (true)
-	{
-		doubleBuffer->FlipBuffer();
-		doubleBuffer->ClearBuffer();
 
-		//Todo
-		stage.Progress();
-		stage.Render();
-
-		Sleep(20);
-	}
-
-	stage.Release();
-	doubleBuffer->ReleaseBuffer();
 
 	return 0;
 }
