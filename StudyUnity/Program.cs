@@ -3,31 +3,22 @@ using System.Collections;
 
 namespace StudyUnity
 {
-    interface IA
-    {
-    }
-    class B : IA
-    {
-    }
-    class C
-    {
-    }
-
-    class QQQ<T> where T : IA
-    {
-        public T Return(T a)
-        {
-            return a;
-        }
-    }
-
-    class Start
+    
+    class Snow
     {
         static void Main()
         {
-            QQQ<B> bQQ = new QQQ<B>();
-            QQQ<C> cQQ = new QQQ<C>(); // 에러
+            Queue<int> Queue = new Queue<int>();
+            Queue.Enqueue(1);
+            Queue.Enqueue(2);
+            Queue.Enqueue(3);
+            Queue.Enqueue(4);
 
+            Console.WriteLine($"Count : {Queue.Count}");
+
+            Queue.Clear();
+
+            Console.WriteLine($"Count : {Queue.Count}");
         }
     }
 }
