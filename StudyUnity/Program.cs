@@ -3,17 +3,31 @@ using System.Collections;
 
 namespace StudyUnity
 {
-    class Program
+    interface IA
     {
-        static void Main(string[] args)
-        {
-            Hashtable hashtable = new Hashtable();
-            hashtable.Add("name", "snow");
-            hashtable.Add("age", 18);
+    }
+    class B : IA
+    {
+    }
+    class C
+    {
+    }
 
-            foreach (string key in hashtable.Keys) {
-                Console.WriteLine(key);
-            }
+    class QQQ<T> where T : IA
+    {
+        public T Return(T a)
+        {
+            return a;
+        }
+    }
+
+    class Start
+    {
+        static void Main()
+        {
+            QQQ<B> bQQ = new QQQ<B>();
+            QQQ<C> cQQ = new QQQ<C>(); // 에러
+
         }
     }
 }
