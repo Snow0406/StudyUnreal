@@ -42,15 +42,19 @@ namespace Snow
 
         static void SetStudentInfo()
         {
-            StudentInfo student = new StudentInfo();
-            Console.WriteLine("학생의 나이를 입력하세요.");
-            string input = Console.ReadLine();
-            int age = int.Parse(input);
-            student.age = age;
-            Console.WriteLine("학생의 이름을 입력하세요.");
-            input = Console.ReadLine();
-            student.name = input;
-            studentInfos.Add(student.name, student);
+            try {
+                StudentInfo student = new StudentInfo();
+                Console.WriteLine("학생의 나이를 입력하세요.");
+                string input = Console.ReadLine();
+                int age = int.Parse(input);
+                student.age = age;
+                Console.WriteLine("학생의 이름을 입력하세요.");
+                input = Console.ReadLine();
+                student.name = input;
+                studentInfos.Add(student.name, student);
+            } catch (Exception e) { 
+                Console.WriteLine($"오류 발생 : {e.Message}"); 
+            }
         }
         static void EditStudentInfo()
         {
