@@ -4,8 +4,10 @@
 
 class Bullet : public Object
 {
-private:
-	Object* bullets[BulletCount] = Object* Player::bullets[BulletCount];
+public:
+	Bullet* bullets[BulletCount] = {};
+public:
+	bool isAct;
 public:
 	virtual void Initialize() override;
 	virtual void Progress() override;

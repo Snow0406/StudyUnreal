@@ -5,7 +5,6 @@ void Player::Initialize()
 {
 	x = 10;
 	y = 10;
-	isAct = true;
 	shape = "¿Ê";
 	color = YELLOW;
 }
@@ -32,34 +31,7 @@ void Player::Progress()
 	}
 #pragma endregion
 #pragma region Act
-	if (GetAsyncKeyState(VK_SPACE))
-	{
-		for (int i = 0; i < BulletCount; i++)
-		{
-			if (!bullets[i]->isAct)
-			{
-				bullets[i]->x = x + 6;
-				bullets[i]->y = y + 1;
-				bullets[i]->isAct = true;
-				break;
-			}
-		}
-	}
-
-	for (int i = 0; i < BulletCount; i++)
-	{
-		if (bullets[i]->isAct)
-		{
-			bullets[i]->x++;
-
-			if (bullets[i]->x > 38)
-			{
-				bullets[i]->isAct = false;
-				bullets[i]->x = i;
-				bullets[i]->y = 0;
-			}
-		}
-	}
+	
 #pragma endregion
 
 }

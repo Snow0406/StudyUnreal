@@ -7,7 +7,6 @@ public:
 	int x;
 	int y;
 	const char* shape;
-	bool isAct;
 	Color color;
 public:
 	virtual void Initialize() abstract;
