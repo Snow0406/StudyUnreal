@@ -1,30 +1,26 @@
-#include <iostream>
-
-using namespace std;
-
-template <typename T>
-void ClearData(T a)
-{
-	cout << sizeof(T) << endl;
-	if (a != nullptr)
-	{
-		delete a;
-		a = nullptr;
-	}
-}
+#include "SceneManager.h"
+#include "DoubleBuffer.h"
 
 int main()
 {
-	int* ip = new int;
-	float* fp = new float;
+	auto sceneManager = SceneManager::Get();
+	auto bufferManager = DoubleBuffer::Get();
 
-	ClearData(ip);
-	ClearData(fp);
+	bufferManager->InitBuffer();
+	sceneManager->Initialize(LOGO);
 
-	cout << "ip : " << ip << endl;
-	cout << "fp : " << fp << endl;
+	while (true)
+	{
+		bufferManager->FlipBuffer();
+		bufferManager->ClearBuffer();
 
+		sceneManager->Progress();
+		sceneManager->Render();
+		Sleep(50);
+	}
 
+	sceneManager->Release();
+	bufferManager->ReleaseBuffer();
 
 	return 0;
 }
