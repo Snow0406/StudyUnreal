@@ -2,59 +2,78 @@
 #include "DoubleBuffer.h"
 #include "Player.h"
 
+#pragma region First
 void Bullet::Initialize()
 {
-	for (int i = 0; i < BulletCount; i++)
-	{
-		bullets[i]->isAct = false;
-		bullets[i]->x = i;
-		bullets[i]->y = 0;
-		bullets[i]->color = LIGHTCYAN;
-		bullets[i]->shape = "¡Ü";
-	}
+	isAct = false;
+	x = 0;
+	y = 0;
+	shape = "¤·";
+	color = RED;
 }
 
 void Bullet::Progress()
 {
-	if (GetAsyncKeyState(VK_SPACE))
+	if (isAct)
 	{
-		for (int i = 0; i < BulletCount; i++)
-		{
-			if (!bullets[i]->isAct)
-			{
-				bullets[i]->x = 0 + 6;
-				bullets[i]->y = 0 + 1;
-				bullets[i]->isAct = true;
-				break;
-			}
-		}
+		x++;
+		if (x > BufferWidth / 2 - 2) isAct = false;
 	}
-
-	for (int i = 0; i < BulletCount; i++)
-	{
-		if (bullets[i]->isAct)
-		{
-			bullets[i]->x++;
-
-			if (bullets[i]->x > 38)
-			{
-				bullets[i]->isAct = false;
-				bullets[i]->x = i;
-				bullets[i]->y = 0;
-			}
-		}
-	}
-
 }
 
 void Bullet::Render()
 {
+	if (isAct) DoubleBuffer::Get()->WriteBuffer(x, y, shape, color);
+}
+
+void Bullet::Release() {}
+#pragma endregion
+#pragma region Second
+void Bullet::_Initialize()
+{
 	for (int i = 0; i < BulletCount; i++)
 	{
-		DoubleBuffer::Get()->WriteBuffer(bullets[i]->x, bullets[i]->y, bullets[i]->shape, bullets[i]->color);
+		bullets[i] = new Bullet;
+		bullets[i]->Initialize();
 	}
 }
 
-void Bullet::Release()
+void Bullet::_Progress()
 {
+	for (int i = 0; i < BulletCount; i++)
+	{
+		bullets[i]->Progress();
+	}
 }
+
+void Bullet::_Shoot(int _x, int _y)
+{
+	for (int i = 0; i < BulletCount; i++)
+	{
+		if (!bullets[i]->GetAct())
+		{
+			bullets[i]->SetAct(true);
+			bullets[i]->SetPos(_x, _y);
+			break;
+		}
+	}
+}
+
+void Bullet::_Render()
+{
+	for (int i = 0; i < BulletCount; i++)
+	{
+		bullets[i]->Render();
+	}
+}
+
+void Bullet::_Release()
+{
+	for (int i = 0; i < BulletCount; i++)
+	{
+		bullets[i]->Release();
+		delete bullets[i];
+		bullets[i] = nullptr;
+	}
+}
+#pragma endregion

@@ -5,36 +5,30 @@
 
 void Stage::Initialize()
 {
-	//player = new Player;
-	//bullet = new Bullet;
-	//player->Initialize();
-	bullet->Initialize();
+	player = new Player;
+	player->Initialize();
+
+	spawnTime = 0;
 }
 
 void Stage::Progress()
 {
-	//player->Progress();
-	bullet->Progress();
+	spawnTime++;
+	player->Progress();
 }
 
 void Stage::Render()
 {
-	//player->Render();
-	bullet->Render();
+	player->Render();
+
 }
 
 void Stage::Release()
 {
-	//if (player != nullptr)
-	//{
-	//	player->Release();
-	//	delete player;
-	//	player = nullptr;
-	//}
-	if (bullet != nullptr)
+	if (player != nullptr)
 	{
-		bullet->Release();
-		delete bullet;
-		bullet = nullptr;
+		player->Release();
+		delete player;
+		player = nullptr;
 	}
 }

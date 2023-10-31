@@ -1,13 +1,8 @@
 #pragma once
-#include "Scene.h"
 #include "Object.h"
 
-class Stage : public Scene
+class Enemy : public Object
 {
-public:
-	Object* player = NULL;
-	Object* bullet = NULL;
-	int spawnTime;
 public:
 	virtual void Initialize() override;
 	virtual void Progress() override;

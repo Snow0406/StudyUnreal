@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "DoubleBuffer.h"
+#include "Bullet.h"
 
 void Player::Initialize()
 {
@@ -7,6 +8,8 @@ void Player::Initialize()
 	y = 10;
 	shape = "¿Ê";
 	color = YELLOW;
+
+	Bullet::_Initialize();
 }
 
 void Player::Progress()
@@ -31,9 +34,11 @@ void Player::Progress()
 	}
 #pragma endregion
 #pragma region Act
-	
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		Bullet::_Shoot(x, y);
+	}
 #pragma endregion
-
 }
 
 void Player::Render()
