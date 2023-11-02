@@ -1,26 +1,40 @@
-#include "SceneManager.h"
-#include "DoubleBuffer.h"
+#include <iostream>
+
+using namespace std;
+
+class Obj
+{
+public:
+	int x;
+	int y;
+public:
+	//반환형 operator연산자(매개변수들)
+	//{}
+	//void operator+(const Obj& other)
+	//{
+	//	cout << "In" << endl;
+	//}
+};
+
+//반환형 operator연산자(매개변수들)
+void operator+(const Obj& a, const Obj& b)
+{
+	cout << "Out" << endl;
+}
 
 int main()
 {
-	auto sceneManager = SceneManager::Get();
-	auto bufferManager = DoubleBuffer::Get();
+	Obj a;
+	a.x = 1;
+	a.y = 1;
 
-	bufferManager->InitBuffer();
-	sceneManager->Initialize(LOGO);
+	Obj b;
+	b.x = 2;
+	b.y = 2;
 
-	while (true)
-	{
-		bufferManager->FlipBuffer();
-		bufferManager->ClearBuffer();
+	a + b;
+	//a.operator+(b);
 
-		sceneManager->Progress();
-		sceneManager->Render();
-		Sleep(50);
-	}
-
-	sceneManager->Release();
-	bufferManager->ReleaseBuffer();
 
 	return 0;
 }
