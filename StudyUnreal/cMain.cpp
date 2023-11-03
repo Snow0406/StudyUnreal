@@ -2,38 +2,18 @@
 
 using namespace std;
 
-class Obj
-{
-public:
-	int x;
-	int y;
-public:
-	//반환형 operator연산자(매개변수들)
-	//{}
-	//void operator+(const Obj& other)
-	//{
-	//	cout << "In" << endl;
-	//}
-};
+typedef int(*A)(int, int);
+using B = int(*)(int, int);
 
-//반환형 operator연산자(매개변수들)
-void operator+(const Obj& a, const Obj& b)
-{
-	cout << "Out" << endl;
-}
+int Add(int a, int b) { return a + b; }
 
 int main()
 {
-	Obj a;
-	a.x = 1;
-	a.y = 1;
+	A p = Add;
+	B pp = Add;
 
-	Obj b;
-	b.x = 2;
-	b.y = 2;
-
-	a + b;
-	//a.operator+(b);
+	cout << p(1, 2) << endl;
+	cout << p(2, 4) << endl;
 
 
 	return 0;
