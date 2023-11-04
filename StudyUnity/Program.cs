@@ -4,16 +4,24 @@ namespace Snow
 {
     class Program
     {
-        private delegate void Yuki(int num);
-        static void A(int num) { Console.WriteLine($"A : {num}"); }
-        static void B(int num) { Console.WriteLine($"B : {num}"); }
+        class Snow {
+            float playerX = 10;
+            float playerY = 20;
+            public float Distance { get => MathF.Abs(playerX - playerY); }
+        }
 
+        public delegate void Yuki();
+        static Yuki yuki;
         static void Main()
         {
-            Yuki yuki = new Yuki(A);
-            yuki(123);
-            yuki = B;
-            yuki(456);
+            //yuki = delegate () { Console.WriteLine("asdf"); };
+            //yuki();
+            //
+            //yuki = () => { Console.WriteLine("Lamda Yuki"); };
+            //yuki();
+
+            Snow snow = new Snow();
+            Console.WriteLine(snow.Distance); 
         }
     }
 }
