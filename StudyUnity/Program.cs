@@ -12,7 +12,7 @@ namespace Snow
         {
             Yuki yuki = new Yuki(A);
             yuki(123);
-            yuki = new Yuki(B);
+            yuki = B;
             yuki(456);
         }
     }
