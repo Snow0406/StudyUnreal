@@ -1,28 +1,38 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
+using System.Threading; // 사용
 
-namespace Snow
+namespace SBSGame
 {
     class Program
     {
+        static int num = 0;
+
+        static object lockObj = new object();
         static void Main()
         {
-            List<int> list = new List<int>();
-            while (true) {
-                string? s = Console.ReadLine();
-                if (s == "0") {
-                    var linqData = from data in list where data % 3 == 0 orderby data ascending select data;
-                    Console.WriteLine("=========================");
-                    foreach (var data in linqData) {
-                        Console.WriteLine(data);
-                    }
-                    break;
-                } else {
-                    list.Add(int.Parse(s));
-                }
+
+
+            for (int i = 0; i < 10; i++) {
+                Task task = new Task(()=> {
+                    Console.WriteLine("Orders received!~");
+                    Thread.Sleep(1000);
+                    Console.WriteLine("Job finished!");
+                });
+                task.Start();
             }
 
+
+            Thread.Sleep(2000);
+            Console.WriteLine("Build Succeed");
+            while (true) { }
+
         }
+        static void SCV()
+        {
+            //Console.WriteLine("Orders received!~");
+            //Thread.Sleep(1000);
+            //Console.WriteLine("Job finished!");
+        }
+
     }
 }
