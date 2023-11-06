@@ -1,28 +1,39 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
+using System.Threading; // 사용
 
 namespace Snow
 {
     class Program
     {
+        static int num = 0;
+
+        static object lockObj = new object();
         static void Main()
         {
-            List<int> list = new List<int>();
-            while (true) {
-                string? s = Console.ReadLine();
-                if (s == "0") {
-                    var linqData = from data in list where data % 3 == 0 orderby data ascending select data;
-                    Console.WriteLine("=========================");
-                    foreach (var data in linqData) {
-                        Console.WriteLine(data);
-                    }
-                    break;
-                } else {
-                    list.Add(int.Parse(s));
-                }
-            }
+            Thread add = new Thread(Add);
+            add.Name = "추가";
+            add.Start();
+            Thread sub = new Thread(Sub);
+            sub.Name = "감소";
+            sub.Start();
 
+            add.Join();
+            sub.Join();
+
+            Console.WriteLine(num);
+        }
+        static void Sub()
+        {
+            for (int i = 0; i < 100000; i++) {
+                Interlocked.Decrement(ref num);
+            }
+        }
+
+        static void Add()
+        {
+            for (int i = 0; i < 100000; i++) {
+                Interlocked.Increment(ref num);
+            }
         }
     }
 }
