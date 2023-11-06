@@ -5,35 +5,29 @@ namespace Snow
 {
     class Program
     {
-        static int num = 0;
+        //static int num = 0;
 
-        static object lockObj = new object();
+       // static object lockObj = new object();
         static void Main()
         {
-            Thread add = new Thread(Add);
-            add.Name = "추가";
-            add.Start();
-            Thread sub = new Thread(Sub);
-            sub.Name = "감소";
-            sub.Start();
 
-            add.Join();
-            sub.Join();
 
-            Console.WriteLine(num);
-        }
-        static void Sub()
-        {
-            for (int i = 0; i < 100000; i++) {
-                Interlocked.Decrement(ref num);
+            for (int i = 0; i < 10; i++) {
+                Task task = new Task(() => {
+
+                    Console.WriteLine("Orders received!~");
+                    Thread.Sleep(1000);
+                    Console.WriteLine("Job finished!");
+
+                });
+                task.Start();
             }
-        }
 
-        static void Add()
-        {
-            for (int i = 0; i < 100000; i++) {
-                Interlocked.Increment(ref num);
-            }
+
+            Thread.Sleep(2000);
+            Console.WriteLine("Build Succeed");
+            while (true) { }
+
         }
     }
 }
