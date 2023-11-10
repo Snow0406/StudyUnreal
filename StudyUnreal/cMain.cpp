@@ -1,35 +1,22 @@
-#include "Queue.h"
-#include "Deque.h"
-//#include <string>
+#include "ArrayList.h"
 
 int main()
 { 
-	Queue queue;
-	Deque deque;
+	ArrayList arrayList;
 
-	//queue.Enqueue(10);
-	//queue.Enqueue(20);
-	//queue.Enqueue(30);
-	//
-	//cout << queue.Count() << endl;
-	//
-	//cout << queue.Dequeue() << endl;
-	//
-	//cout << queue.Count() << endl;
+	arrayList.AddNode(10);
+	arrayList.AddNode(20);
+	arrayList.AddNode(30);
+	arrayList.AddNode(40);
+	arrayList.InsertNode(2, 77);
+	arrayList.InsertNode(0, 2, 88);
 
-	deque.Push_Back(10);
-	deque.Push_Back(20);
-	deque.Push_Front(30);
-	
-	deque.PrintAll();
+	arrayList.DeleteNodeData(10);
+	arrayList.DeleteIndex(0);
 
-	cout << "====================" << endl;
-	
-	cout << deque.Pop_Front() << endl;
+	arrayList.UpdateNode(3, 99);
 
-	cout << "====================" << endl;
-	
-	deque.PrintAll();
+	arrayList.PrintAll();
 
 	return 0;
 }
