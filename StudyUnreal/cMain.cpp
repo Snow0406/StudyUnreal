@@ -2,21 +2,14 @@
 
 int main()
 { 
-	ArrayList arrayList;
+	SingleList singleList;
 
-	arrayList.AddNode(10);
-	arrayList.AddNode(20);
-	arrayList.AddNode(30);
-	arrayList.AddNode(40);
-	arrayList.InsertNode(2, 77);
-	arrayList.InsertNode(0, 2, 88);
+	singleList.AddNode(10);
+	singleList.AddNode(20);
+	singleList.AddNode(30);
 
-	arrayList.DeleteNodeData(10);
-	arrayList.DeleteIndex(0);
-
-	arrayList.UpdateNode(3, 99);
-
-	arrayList.PrintAll();
+	cout << singleList.head->data << endl;
+	//cout << singleList.head->next->data << endl;
 
 	return 0;
 }
