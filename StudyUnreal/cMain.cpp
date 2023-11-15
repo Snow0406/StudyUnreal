@@ -1,33 +1,54 @@
-#include "ArrayList.h"
+#include <iostream>
+using namespace std;
 
-int main()
+//#define SWAP(a,b) {int temp; temp = a; a = b; b = temp;}
+#define MAX 10
+
+void BubbleSort(int* pNum, int num);
+void Show(int* pArray, int num);
+
+void main()
 {
-	SingleList singleList;
+	int array[MAX] = { 3,0,1,8,7,2,5,4,6,9 };
+	BubbleSort(array, MAX);
+	BubbleSort(array, MAX);
+}
 
-	singleList.AddNode(10);
-	singleList.AddNode(20);
-	singleList.AddNode(30);
-	singleList.AddNode(40);
-	singleList.AddNode(50);
+void BubbleSort(int* pArray, int num)
+{
+	Show(pArray, num);
 
-	singleList.InsertNode(2, 77);
+	int isEnd = 0;
+	while (true)
+	{
+		for (int i = 0; i < MAX - 1; i++)
+		{
+			int num;
+			if (pArray[i] < pArray[i + 1]) { //ex: 2 4
+				isEnd++;
+			}
+			else if (pArray[i] > pArray[i + 1]) { //ex: 4 2
+				num = pArray[i];
+				pArray[i] = pArray[i + 1];
+				pArray[i + 1] = num;
+			} else { //ex: 2 2
+				isEnd++;
+			}
+		}
 
-	singleList.UpdateNode(3, 33);
-	singleList.UpdateNode(4, 44);
+		if (isEnd == MAX - 1) {
+			Show(pArray, num);
+			break;
+		} else isEnd = 0;
+	}
+}
 
-	singleList.DeleteNodeData(77);
-	singleList.DeleteIndex(2);
+void Show(int* pArray, int num)
+{
+	for (int i = 0; i < num; i++)
+	{
+		cout << pArray[i] << " ";
+	}
 
-	singleList.PrintAll();
-
-	cout << "================" << endl;
-
-	cout << singleList.GetNodeData(1) << endl;
-	singleList.ClearAllNode();
-
-	cout << "================" << endl;
-
-	cout << singleList.GetListSize() << endl;
-
-	return 0;
+	cout << endl;
 }
