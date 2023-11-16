@@ -20,15 +20,15 @@ void SelectionSort(int* pArray, int num)
 	for (int i = 0; i < 10; i++)
 	{
 			int mainNum = pArray[i]; //3
-			for (int j = i + 1; j < 9 - i; j++) //1 //2 //3
+			for (int j = i + 1; j < 10; j++) //1 //2 //3
 			{
 				if (mainNum < pArray[j]) { //3 0 //0 1 //
 					continue;
 				} else if (mainNum > pArray[j]) { //3 0 //0 1
-					mainNum = pArray[j]; //0 //0
+					SWAP(mainNum, pArray[j]); //0 //0
 				}
 			}
-			newArray[i] = pArray[i];
+			newArray[i] = mainNum;
 	}
 	pArray = newArray;
 	  Show(pArray, num);
