@@ -3,29 +3,34 @@ using namespace std;
 
 #define SWAP(a,b) {int temp; temp = a; a = b; b = temp;}
 
-void InsertSort(int* pNum, int num);
+void ShellSort(int* pNum, int num);
 void Show(int* pArray, int num);
 
 void main()
 {
 	int array[10] = { 3,0,1,8,7,2,5,4,9,6 };
-	InsertSort(array, 10);
+	ShellSort(array, 10);
 }
 
-void InsertSort(int* pArray, int num)
+void ShellSort(int* pNum, int num)
 {
-	Show(pArray, num);
-	for (int i = 0; i < 10; i++)
+	Show(pNum, num);
+
+	int gap = (10 / 2);
+	for (int i = 0; gap > 2; i++)
 	{
-		for (int j = i-1; j >= 0; j--)
+		for (int j = 0; j < gap; j++)
 		{
-			if (pArray[j] > pArray[j + 1]) {
-				SWAP(pArray[j], pArray[j + 1]);
-				Show(pArray, num);
-			}
+				for (int k = 0; j + gap; k++)
+				{
+					if (pNum[j] > pNum[j + gap]) {
+						SWAP(pNum[j + gap], pNum[j]);
+					}
+				}
 		}
+		gap = (gap + 1) / 2;
 	}
-	Show(pArray, num);
+	Show(pNum, num);
 }
 
 void Show(int* pArray, int num)
@@ -36,5 +41,4 @@ void Show(int* pArray, int num)
 	}
 
 	cout << endl;
-	cout << "==================" << endl;
 }
