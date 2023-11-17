@@ -16,19 +16,28 @@ void ShellSort(int* pNum, int num)
 {
 	Show(pNum, num);
 
-	int gap = (10 / 2);
-	for (int i = 0; gap > 2; i++)
+	int gap = (num / 2);
+	int count = 0;
+	
+	while (count != 2)
 	{
-		for (int j = 0; j < gap; j++)
+		for (int i = 0; gap + i < num; i++)
 		{
-				for (int k = 0; j + gap; k++)
+			if (pNum[i] > pNum[gap + i]) {
+				SWAP(pNum[i], pNum[gap + i]);
+				Show(pNum, num);
+				for (int j = 1; !pNum[i - (gap * j)]; j++)
 				{
-					if (pNum[j] > pNum[j + gap]) {
-						SWAP(pNum[j + gap], pNum[j]);
+					if (pNum[i - (gap * j)] > pNum[i - (gap * (j - 1))]) {
+						SWAP(pNum[i - (gap * j)], pNum[i - (gap * (j - 1))]);
+						Show(pNum, num);
 					}
 				}
+			}
 		}
-		gap = (gap + 1) / 2;
+		gap = (gap + 1) / 2 | 0;
+
+		if (gap == 1) count++;
 	}
 	Show(pNum, num);
 }
