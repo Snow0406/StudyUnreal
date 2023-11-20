@@ -1,85 +1,114 @@
 #include <iostream>
-using namespace std;
 
-#define SWAP(a,b) {int temp; temp = a; a = b; b = temp;}
-#define MAX 10
-
-void QuickSort(int* pNum, int left, int right);
-void Show(int* pArray, int num, int type);
-
-void main()
+class TreeNode
 {
-	int array[MAX] = { 3,0,1,8,7,2,5,4,9,6 };
-	QuickSort(array, 0, 9);
-}
+public:
+    int data;
+    TreeNode* left;
+    TreeNode* right;
 
-void QuickSort(int* pNum, int left, int right)
+    TreeNode(int value) : data(value), left(nullptr), right(nullptr) {}
+};
+
+class BinaryTree
 {
-	Show(pNum, MAX, 0);
+private:
+    TreeNode* root;
 
-	int newArray[10] = {};
-	int i = 0;
-		//int mainNum = pNum[i];
-		for (int j = 1; j < MAX; j++) //1
-		{
-			if (pNum[i] > pNum[MAX - j]) {
-				SWAP(pNum[i], pNum[MAX - j]);
-				Show(pNum, MAX, 1);
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if (root == nullptr) {
+            return root;
+        }
 
-				for (int k = 0; k < MAX - j; k++) //2
-				{
-					if (pNum[MAX - j] < pNum[k]) {
-						int mainIndex = 0;
-						SWAP(pNum[MAX - j], pNum[k]);
-						mainIndex = k;
-						Show(pNum, MAX, 2);
-						if (pNum[k] > pNum[k + 1])
-						{
-							SWAP(pNum[k], pNum[k + 1]);
-							Show(pNum, MAX, 2.5);
-							mainIndex = k + 1;
-						}
-						for (int n = 0; n < mainIndex; n++) //3
-						{
-							if (pNum[n] > pNum[mainIndex-1])
-							{
-								SWAP(pNum[n], pNum[mainIndex - 1]);
-								for (int m = n+1; m < mainIndex - 1; m++)
-								{
-									if (pNum[m] > pNum[mainIndex - 1])
-									{
-										SWAP(pNum[m], pNum[mainIndex - 1]);
-									}
-								}
-							}
-						}
-						for (int l = 0; l < MAX; l++) //4
-						{
-							if (pNum[mainIndex + 1] > pNum[MAX - l])
-							{
-								SWAP(pNum[mainIndex + 1], pNum[MAX - l]);
-								for (int m = l + 1; m < mainIndex - 1; m++)
-								{
-									if (pNum[m] > pNum[mainIndex - 1])
-									{
-										SWAP(pNum[m], pNum[mainIndex - 1]);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		//Show(newArray, MAX);
-}
+        if (key < root->data) {
+            root->left = deleteNode(root->left, key);
+        } else if (key > root->data) {
+            root->right = deleteNode(root->right, key);
+        } else {
+            if (root->left == nullptr) {
+                TreeNode* temp = root->right;
+                delete root;
+                return temp;
+            } else if (root->right == nullptr) {
+                TreeNode* temp = root->left;
+                delete root;
+                return temp;
+            }
 
-void Show(int* pArray, int num, int type)
-{
-	for (int i = 0; i < num; i++)
-	{
-		cout << pArray[i] << " ";
-	}
+            TreeNode* temp = minValueNode(root->right);
+            root->data = temp->data;
+            root->right = deleteNode(root->right, temp->data);
+        }
 
-	cout << " [" << type << "]" << endl;
+        return root;
+    }
+
+    TreeNode* minValueNode(TreeNode* node) {
+        TreeNode* current = node;
+        while (current->left != nullptr) {
+            current = current->left;
+        }
+        return current;
+    }
+
+public:
+    BinaryTree() : root(nullptr) {}
+
+    void insert(int value) {
+        root = insertNode(root, value);
+    }
+
+    void remove(int key) {
+        root = deleteNode(root, key);
+    }
+
+    void inorderTraversal(TreeNode* node) {
+        if (node != nullptr) {
+            inorderTraversal(node->left);
+            std::cout << node->data << " ";
+            inorderTraversal(node->right);
+        }
+    }
+
+    void inorderTraversal() {
+        inorderTraversal(root);
+        std::cout << std::endl;
+    }
+
+private:
+    TreeNode* insertNode(TreeNode* node, int value) {
+        if (node == nullptr) {
+            return new TreeNode(value);
+        }
+
+        if (value < node->data) {
+            node->left = insertNode(node->left, value);
+        } else if (value > node->data) {
+            node->right = insertNode(node->right, value);
+        }
+
+        return node;
+    }
+};
+
+int main() {
+    BinaryTree tree;
+
+    tree.insert(50);
+    tree.insert(30);
+    tree.insert(20);
+    tree.insert(40);
+    tree.insert(70);
+    tree.insert(60);
+    tree.insert(80);
+
+    std::cout << "Inorder traversal before deletion: ";
+    tree.inorderTraversal();
+
+    tree.remove(30);
+
+    std::cout << "Inorder traversal after deletion: ";
+    tree.inorderTraversal();
+
+    return 0;
 }
