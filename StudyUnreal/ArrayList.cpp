@@ -39,19 +39,26 @@ void BinaryTree::InsertNode(Node* tree, Node* newNode)
 	}
 }
 
-//Node* BinaryTree::DeleteNode(Node* tree, int data)
-//{
-//	if (data > tree->data) {
-//		if (tree->right != NULL) {
-//			InsertNode(tree->right, newNode);
-//		} else return NULL;
-//	} else if (data > tree->data) {
-//		if (tree->left != NULL) {
-//			InsertNode(tree->left, newNode);
-//		} else return NULL;
-//	} else 
-//	return nullptr;
-//}
+Node* BinaryTree::DeleteNode(Node* tree, int data)
+{
+	if (data < tree->data) {
+		DeleteNode(tree->left, data);
+	} else if (data > tree->data) {
+		DeleteNode(tree->right, data);
+	} else {
+		if (tree->left == NULL) {
+			Node* tree2 = tree->right;
+			return tree2;
+		} else if (tree->right == NULL) {
+			Node* tree2 = tree->left;
+			return tree2;
+		}
+	}
+
+	
+
+
+}
 
 Node* BinaryTree::FindMin(Node* root)
 {

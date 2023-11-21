@@ -27,7 +27,7 @@ private: // 내부 구현 용도 (재귀)
 	//노드 삽입
 	void InsertNode(Node* tree, Node* newNode);
 	//노드 삭제
-	//Node* DeleteNode(Node* tree, int data);
+	Node* DeleteNode(Node* tree, int data);
 	//최저값 찾기
 	Node* FindMin(Node* root);
 	//최대값 찾기
