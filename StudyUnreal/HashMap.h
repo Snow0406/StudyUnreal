@@ -13,7 +13,7 @@ struct  Node
 
 class HashMap
 {
-private:
+public:
 	Node** table;
 public:
 	void Add(int key, int value);
@@ -21,6 +21,7 @@ public:
 	void Remove(int key);
 	int Count();
 	void Clear();
+	void PrintALL();
 public:
 	HashMap();
 	~HashMap();

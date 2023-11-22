@@ -8,13 +8,19 @@ int main() {
     HashMap hashMap;
 
     hashMap.Add(10, 11);
-    hashMap.Add(20, 111);
-    hashMap.Add(30, 1111);
-    hashMap.Add(21, 22);
+    hashMap.Add(20, 22);
 
+    hashMap.Add(99, 9);
+    hashMap.Add(89, 99);
+    hashMap.Add(79, 999);
+
+    hashMap.PrintALL();
+   
     cout << hashMap.Count() << endl;
+    cout << hashMap.GetValue(89) << endl;
+    hashMap.Remove(89);
 
-    cout << hashMap.GetValue(40) << endl;
+    hashMap.PrintALL();
 
     return 0;
 }

@@ -3,25 +3,26 @@
 void HashMap::Add(int key, int value)
 {
     int hashKey = key % TABLE_SIZE;
-    while (table[hashKey] == NULL)
+    while(true)
     {
-        if (TABLE_SIZE == hashKey + 1) hashKey = 0;
-        else hashKey++;
+        if (table[hashKey] == NULL) break;
+
+        if (hashKey == TABLE_SIZE - 1) hashKey = 0;
+        hashKey++;
     }
    
-    Node* node = new Node();
-    node->key = key;
-    node->data = value;
-    table[hashKey] = node;
+    Node* newNode = new Node{key, value};
+    table[hashKey] = newNode;
 }
 
 int HashMap::GetValue(int key)
 {
     int hashKey = key % TABLE_SIZE;
-    while (table[hashKey]->key == key)
+    while (true)
     {
-        if (TABLE_SIZE == hashKey + 1) hashKey = 0;
-        else hashKey++;
+        if (table[hashKey]->key == key) break;
+        if (hashKey == TABLE_SIZE - 1) hashKey = 0;
+        hashKey++;
     }
     return table[hashKey]->data;
 }
@@ -29,6 +30,12 @@ int HashMap::GetValue(int key)
 void HashMap::Remove(int key)
 {
     int hashKey = key % TABLE_SIZE;
+    while (true)
+    {
+        if (table[hashKey]->key == key) break;
+        if (hashKey == TABLE_SIZE - 1) hashKey = 0;
+        hashKey++;
+    }
     delete table[hashKey];
     table[hashKey] = NULL;
 }
@@ -38,7 +45,7 @@ int HashMap::Count()
     int count = 0;
     for (int i = 0; i < TABLE_SIZE; i++)
     {
-        if (table[i]->data) count++;
+        if (table[i] != NULL) count++;
     }
 
     return count;
@@ -55,9 +62,23 @@ void HashMap::Clear()
     }
 }
 
+void HashMap::PrintALL()
+{
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        if (table[i] != NULL) {
+            cout << "[" << i << "] " << "[key:" << table[i]->key << ", data:" << table[i]->data << "]" << endl;
+        } else cout << "[" << i << "] " << "[NULL]" << endl;
+    }
+}
+
 HashMap::HashMap()
 {
     table = new Node * [TABLE_SIZE];
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        table[i] = NULL;
+    }
 }
 
 HashMap::~HashMap()
