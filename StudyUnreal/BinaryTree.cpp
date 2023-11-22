@@ -1,14 +1,24 @@
-#include "ArrayList.h"
+#include "BinaryTree.h"
 
 void BinaryTree::AddNode(int data)
 {
-	if (rootNode->data == NULL) rootNode->data = data;
-	else InsertNode(rootNode, CreateNode(data));
+	Node* newNode = CreateNode(data);
+	if (rootNode == NULL) rootNode = newNode;
+	else InsertNode(rootNode, newNode);
 }
 
 void BinaryTree::RemoveNode(int data)
 {
+	if (rootNode == nullptr)
+	{
+		cout << "자료가 없습니다." << endl;
+	} else
+	{
+		DeleteNode(rootNode, data);
+	}
 }
+
+
 
 void BinaryTree::PrintAll()
 {
@@ -32,7 +42,7 @@ void BinaryTree::InsertNode(Node* tree, Node* newNode)
 		if (tree->right != NULL) {
 			InsertNode(tree->right, newNode);
 		} else tree->right = newNode;
-	} else if (newNode->data > tree->data) {
+	} else if (newNode->data < tree->data) {
 		if (tree->left != NULL) {
 			InsertNode(tree->left, newNode);
 		} else tree->left = newNode;
@@ -41,33 +51,41 @@ void BinaryTree::InsertNode(Node* tree, Node* newNode)
 
 Node* BinaryTree::DeleteNode(Node* tree, int data)
 {
-	if (data < tree->data) {
-		DeleteNode(tree->left, data);
+	if (tree == NULL) {
+		return NULL;
+	} else if (data < tree->data) {
+		tree->left = DeleteNode(tree->left, data);
 	} else if (data > tree->data) {
-		DeleteNode(tree->right, data);
+		tree->right = DeleteNode(tree->right, data);
 	} else {
-		if (tree->left == NULL) {
-			Node* tree2 = tree->right;
-			return tree2;
+		if (tree->left == NULL && tree->right == NULL) {
+			delete tree;
+			tree = NULL;
+		} else if (tree->left == NULL) {
+			Node* del = tree;
+			tree = tree->right;
+			delete del;
 		} else if (tree->right == NULL) {
-			Node* tree2 = tree->left;
-			return tree2;
+			Node* del = tree;
+			tree = tree->left;
+			delete del;
+		} else {
+			Node* closedNode = FindMin(tree->right);
+			tree->data = closedNode->data;
+			tree->right = DeleteNode(tree->right, closedNode->data);
 		}
+
 	}
-
-	
-
-
+	return tree;
 }
 
 Node* BinaryTree::FindMin(Node* root)
 {
-	Node* node = root;
-	while (node->left != NULL)
+	while (root->left != NULL)
 	{
-		node = node->left;
+		root = root->left;
 	}
-	return node;
+	return root;
 }
 
 Node* BinaryTree::FindMax(Node* root)
@@ -90,11 +108,7 @@ void BinaryTree::InOrder(Node* root)
 
 BinaryTree::BinaryTree()
 {
-	Node* node = new Node();
-	node->data = NULL;
-	node->left = NULL;
-	node->right = NULL;
-	rootNode = node;
+	rootNode = NULL;
 }
 
 BinaryTree::~BinaryTree()
