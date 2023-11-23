@@ -1,21 +1,40 @@
-#include <iostream>
-#include "BinaryTree.h"
+#include "Graph.h"
 
-using namespace std;
+void main()
+{
+	Graph graph;
 
-int main() {
-    BinaryTree tree;
+	graph.InitializeGraph(9);
 
-    tree.AddNode(30);
-    tree.AddNode(20);
-    tree.AddNode(10);
-    tree.AddNode(15);
+	graph.AddEdge(0, 2);
+	graph.AddEdge(0, 1);
 
-    tree.PrintAll();
-    tree.RemoveNode(20);
-    cout << "====================" << endl;
+	graph.AddEdge(1, 4);
+	graph.AddEdge(1, 3);
 
-    tree.PrintAll();
-    
-    return 0;
+	graph.AddEdge(2, 8);
+	graph.AddEdge(2, 3);
+
+	graph.AddEdge(3, 7);
+	graph.AddEdge(3, 6);
+	graph.AddEdge(3, 5);
+
+	graph.AddEdge(4, 5);
+	graph.AddEdge(4, 6);
+	graph.AddEdge(4, 3);
+
+	graph.AddEdge(5, 7);
+
+	graph.AddEdge(6, 5);
+
+	graph.AddEdge(7, 6);
+
+	graph.AddEdge(8, 0);
+	graph.AddEdge(8, 7);
+
+	for (int i = 0; i < 9; i++)
+	{
+		graph.ShowGraphEdge(i);
+	}
+
 }
