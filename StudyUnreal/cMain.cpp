@@ -37,4 +37,6 @@ void main()
 		graph.ShowGraphEdge(i);
 	}
 
+	graph.BreadthFirstSerch(0);
+
 }
