@@ -77,10 +77,9 @@ void Graph::BreadthFirstSerch(int node)
 		q.pop();
 
 		if (!isVisited[temp]) {
-			cout << "¹æ¹®ÇÑ ³ëµå : " << temp << endl;
+			cout << "Â¹Ã¦Â¹Â®Ã‡Ã‘ Â³Ã«ÂµÃ¥ : " << temp << endl;
 
 			isVisited[temp] = true;
-			int index = 0;
 			Node* tempNode = graph[temp];
 			while (tempNode != NULL)
 			{
@@ -88,7 +87,6 @@ void Graph::BreadthFirstSerch(int node)
 					q.push(tempNode->data);
 				}
 				tempNode = tempNode->next;
-				index++;
 			}
 		}
 	}
@@ -103,23 +101,18 @@ void Graph::DepthFirstSerch(int node)
 	{
 		int temp = s.top();
 		s.pop();
-	
-		if (!isVisited[temp]) {
-			cout << "¹æ¹®ÇÑ ³ëµå : " << temp << endl;
+
+			cout << "Â¹Ã¦Â¹Â®Ã‡Ã‘ Â³Ã«ÂµÃ¥ : " << temp << endl;
 			isVisited[temp] = true;
-			int index = 0;
 			Node* tempNode = graph[temp];
 			while (tempNode != NULL)
 			{
 				if (!isVisited[tempNode->data]) {
 					s.push(temp);
-					s.
 				}
 				tempNode = tempNode->next;
-				index++;
 			}
 		}
-	}
 }
 
 Node* Graph::CreateNode(int data)
