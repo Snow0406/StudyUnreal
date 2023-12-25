@@ -5,12 +5,12 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
-				"C:/Users/han06/Desktop/project/Unreal/StudyUnreal/Content/StarterContent/Particles/P_Ambient_Dust.uasset",
-				"C:/Users/han06/Desktop/project/Unreal/StudyUnreal/Content/Main.umap",
-				"C:/Users/han06/Desktop/project/Unreal/StudyUnreal/Content/BP_MyActor.uasset",
-				"C:/Users/han06/Desktop/project/Unreal/StudyUnreal/Content/BP_MtCharacter.uasset",
-				"C:/Users/han06/Desktop/project/Unreal/StudyUnreal/Content/BP_MyPawn.uasset",
-				"C:/Users/han06/Desktop/project/Unreal/StudyUnreal/Content/BP_MyGameMode.uasset"
+				"C:/Users/han06/Desktop/project/Unreal/StudyUnreal/Content/Animations/ABP_Player.uasset",
+				"C:/Users/han06/Desktop/project/Unreal/ArrowGameTutorial/Content/Blueprints/BP_Player.uasset",
+				"C:/Users/han06/Desktop/project/Unreal/ArrowGameTutorial/Content/Animations/ABP_Player.uasset",
+				"C:/Users/han06/Desktop/project/Unreal/ArrowGameTutorial/Content/Animations/BS_Walk.uasset",
+				"C:/Users/han06/Desktop/project/Unreal/ArrowGameTutorial/Content/Blueprints/BP_GameMode.uasset",
+				"C:/Users/han06/Desktop/project/Unreal/ArrowGameTutorial/Content/ThirdPerson/Maps/ThirdPersonMap.umap"
 			]
 		}
 	]
