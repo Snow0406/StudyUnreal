@@ -10,6 +10,11 @@ UCLASS()
 class STUDYUNREAL_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
+private:
+	UPROPERTY(EditAnywhere)
+	class USpringArmComponent* SpringArm;
+	UPROPERTY(EditAnywhere)
+	class UCameraComponent* Camera;
 
 public:
 	// Sets default values for this character's properties
@@ -26,4 +31,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	void KeyUpDown(float value);
+	void KeyLeftRight(float value);
+	void MouseLookUpDown(float value);
+	void MouseLookLeftRight(float value);
 };

@@ -2,12 +2,25 @@
 
 
 #include "MyCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+
+	SpringArm->SetupAttachment(GetCapsuleComponent());
+	Camera->SetupAttachment(SpringArm);
+
+	SpringArm->TargetArmLength = 400.f;
+	SpringArm->SetRelativeRotation(FRotator(-35.f, 0.f, 0.f));
+	SpringArm->bUsePawnControlRotation = true;
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SkeletalMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonSparrow/Characters/Heroes/Sparrow/Meshes/Sparrow.Sparrow'"));
 
@@ -21,7 +34,7 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -36,5 +49,28 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &AMyCharacter::KeyUpDown);
+	PlayerInputComponent->BindAxis(TEXT("LeftRight"), this, &AMyCharacter::KeyLeftRight);
+	PlayerInputComponent->BindAxis(TEXT("LookUpDown"), this, &AMyCharacter::MouseLookUpDown);
+	PlayerInputComponent->BindAxis(TEXT("LookLeftRight"), this, &AMyCharacter::MouseLookLeftRight);
 }
 
+void AMyCharacter::KeyUpDown(float value)
+{
+	AddMovementInput(GetActorForwardVector(), value);
+}
+
+void AMyCharacter::KeyLeftRight(float value)
+{
+	AddMovementInput(GetActorRightVector(), value);
+}
+
+void AMyCharacter::MouseLookUpDown(float value)
+{
+	AddControllerPitchInput(value);
+}
+
+void AMyCharacter::MouseLookLeftRight(float value)
+{
+	AddControllerYawInput(value);
+}
