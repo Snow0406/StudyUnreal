@@ -3,13 +3,14 @@
 
 #include "MyCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Camera/CameraComponent.h"
+#include "MyAnimInstance.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -24,17 +25,23 @@ AMyCharacter::AMyCharacter()
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SkeletalMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonSparrow/Characters/Heroes/Sparrow/Meshes/Sparrow.Sparrow'"));
 
-	if (SkeletalMesh.Succeeded()) {
-		GetMesh()->SetSkeletalMesh(SkeletalMesh.Object); //오브젝트 갖고 오느,ㄴ거
-		GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -90.f), FRotator(0.f, -90.f, 0.f)); //방향 지정
+	if (SkeletalMesh.Succeeded())
+	{
+		GetMesh()->SetSkeletalMesh(SkeletalMesh.Object);
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -90.f), FRotator(0.f, -90.f, 0.f));
+	}
+	static ConstructorHelpers::FClassFinder<UAnimInstance> AnimInstance(TEXT("/Script/Engine.AnimBlueprint'/Game/Animation/ABP_MyCharacter.ABP_MyCharacter_C'"));
+
+	if (AnimInstance.Succeeded())
+	{
+		GetMesh()->SetAnimClass(AnimInstance.Class);
 	}
 }
 
-// Called when the game starts or when spawned
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 // Called every frame
@@ -51,10 +58,11 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &AMyCharacter::KeyUpDown);
 	PlayerInputComponent->BindAxis(TEXT("LeftRight"), this, &AMyCharacter::KeyLeftRight);
-	PlayerInputComponent->BindAxis(TEXT("LookUpDown"), this, &AMyCharacter::MouseLookUpDown);
 	PlayerInputComponent->BindAxis(TEXT("LookLeftRight"), this, &AMyCharacter::MouseLookLeftRight);
+	PlayerInputComponent->BindAxis(TEXT("LookUpDown"), this, &AMyCharacter::MouseLookUpDown);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AMyCharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Pressed, this, &AMyCharacter::Fire);
 }
 
 void AMyCharacter::KeyUpDown(float value)
@@ -67,12 +75,21 @@ void AMyCharacter::KeyLeftRight(float value)
 	AddMovementInput(GetActorRightVector(), value);
 }
 
+void AMyCharacter::MouseLookLeftRight(float value)
+{
+	AddControllerYawInput(value);
+}
+
 void AMyCharacter::MouseLookUpDown(float value)
 {
 	AddControllerPitchInput(value);
 }
 
-void AMyCharacter::MouseLookLeftRight(float value)
+void AMyCharacter::Fire()
 {
-	AddControllerYawInput(value);
+	if (IsValid(MyAnimInstance))
+	{
+		MyAnimInstance->PlayFireMontage();
+	}
+
 }

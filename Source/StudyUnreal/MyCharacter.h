@@ -15,6 +15,8 @@ private:
 	class USpringArmComponent* SpringArm;
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* Camera;
+	UPROPERTY(VisibleAnywhere)
+	class UMyAnimInstance* MyAnimInstance;
 
 public:
 	AMyCharacter();
@@ -31,4 +33,5 @@ public:
 	void KeyLeftRight(float value);
 	void MouseLookUpDown(float value);
 	void MouseLookLeftRight(float value);
+	void Fire();
 };

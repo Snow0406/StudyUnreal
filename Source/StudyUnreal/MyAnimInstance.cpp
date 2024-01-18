@@ -1,20 +1,31 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MyCharacter.h"
+
 #include "MyAnimInstance.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
-void UMyAnimInstance::NativeInitializeAnimation()
+#include "MyCharacter.h"
+
+//void UMyAnimInstance::NativeInitializeAnimation()
+//{
+//	Super::NativeInitializeAnimation();
+//
+//
+//}
+
+UMyAnimInstance::UMyAnimInstance()
 {
-	Super::NativeInitializeAnimation();
-	UE_LOG(LogTemp, Log, TEXT("NativeInitializeAnimation"));
+	ConstructorHelpers::FObjectFinder<UAnimMontage> AnimMontage(TEXT("/Script/Engine.AnimMontage'/Game/ParagonSparrow/Characters/Heroes/Sparrow/Animations/Primary_Fire_Med_Montage.Primary_Fire_Med_Montage'"));
+	if (AnimMontage.Succeeded())
+	{
+		FireMontage = AnimMontage.Object;
+	}
 }
 
 void UMyAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
-	UE_LOG(LogTemp, Log, TEXT("NativeBeginPlay"));
 	auto Pawn = TryGetPawnOwner();
 	if (IsValid(Pawn))
 	{
@@ -22,7 +33,6 @@ void UMyAnimInstance::NativeBeginPlay()
 		if (IsValid(MyCharacter))
 		{
 			CharacterMovement = MyCharacter->GetCharacterMovement();
-			//UE_LOG(LogTemp, Log, TEXT("CharacterMovement IsValid"));
 		}
 	}
 }
@@ -30,26 +40,36 @@ void UMyAnimInstance::NativeBeginPlay()
 void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	if (IsValid(MyCharacter)) {
+	if (IsValid(MyCharacter))
+	{
 		Velocity = CharacterMovement->Velocity;
-		FRotator Rotaion = MyCharacter->GetActorRotation();
-		FVector UnRotateVector = Rotaion.UnrotateVector(Velocity);
-		UnRotateVector.Normalize();
-
-		Vertical = UnRotateVector.X;
-		Horizontal = UnRotateVector.Y;
+		FRotator Rotation = MyCharacter->GetActorRotation();
 		Speed = Velocity.Size2D();
 
 		auto Acceleration = CharacterMovement->GetCurrentAcceleration();
 		ShouldMove = Speed > 3.f && Acceleration != FVector::Zero();
 		IsFalling = CharacterMovement->IsFalling();
 
-		FRotator BaseAimRotation = MyCharacter->GetBaseAimRotation();
+		AimRotation = MyCharacter->GetBaseAimRotation();
 		FRotator VelocityRotation = UKismetMathLibrary::MakeRotFromX(Velocity);
 
-		FRotator DeltaRotation = VelocityRotation - BaseAimRotation;
+		FRotator DeltaRotation = VelocityRotation - AimRotation;
 		DeltaRotation.Normalize();
 
 		YawOffset = DeltaRotation.Yaw;
+
+	}
+
+
+}
+
+void UMyAnimInstance::PlayFireMontage()
+{
+	if (IsValid(FireMontage))
+	{
+		if (!Montage_IsPlaying(FireMontage))
+		{
+			Montage_Play(FireMontage);
+		}
 	}
 }
