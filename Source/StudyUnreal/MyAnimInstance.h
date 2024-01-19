@@ -26,6 +26,8 @@ private:
 	float YawOffset; 
 	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	FRotator AimRotation;
+	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	float RotateYaw;
 private:
 	UPROPERTY(VisibleAnywhere)
 	class AMyCharacter* MyCharacter;
@@ -36,6 +38,7 @@ private:
 
 public:
 	UMyAnimInstance();
+public:
 	//virtual void NativeInitializeAnimation() override;
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
