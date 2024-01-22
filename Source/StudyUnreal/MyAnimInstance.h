@@ -28,6 +28,16 @@ private:
 	FRotator AimRotation;
 	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	float RotateYaw;
+	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	FRotator MovingRotation;
+	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	FRotator PrevRotation;
+	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	float PrevDistanceCurve;
+	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	float DistanceCurve;
+	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	float DeltaDistanceCurve;
 private:
 	UPROPERTY(VisibleAnywhere)
 	class AMyCharacter* MyCharacter;

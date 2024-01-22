@@ -58,6 +58,47 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		YawOffset = DeltaRotation.Yaw;
 
+		if (ShouldMove || IsFalling)
+		{
+			RotateYaw = FMath::FInterpTo(RotateYaw, 0.f, DeltaSeconds, 20.f);
+
+			PrevRotation = MovingRotation;
+			MovingRotation = MyCharacter->GetActorRotation();
+		} else
+		{
+			PrevRotation = MovingRotation; 
+			MovingRotation = MyCharacter->GetActorRotation();
+			FRotator Delta = MovingRotation - PrevRotation;
+			Delta.Normalize();
+			RotateYaw -= Delta.Yaw;
+
+			float TurnValue = GetCurveValue("Turn");
+			if (TurnValue > 0.f)
+			{
+				PrevDistanceCurve = DistanceCurve;
+				DistanceCurve = GetCurveValue("DistanceCurve");
+				DeltaDistanceCurve = DistanceCurve - PrevDistanceCurve;
+				if (RotateYaw > 0.f)
+				{
+					RotateYaw -= DeltaDistanceCurve;
+				} else {
+					RotateYaw += DeltaDistanceCurve;
+				}
+
+				float AbsRotateYawOffset = FMath::Abs(RotateYaw);
+				if (AbsRotateYawOffset > 0.f)
+				{
+					float YawExcess = AbsRotateYawOffset - 90.f;
+					if (RotateYaw > 0.f)
+					{
+						RotateYaw -= YawExcess;
+					} else {
+						RotateYaw += YawExcess;
+					}
+				}
+			}
+		}
+
 	}
 
 
