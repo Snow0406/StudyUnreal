@@ -21,8 +21,14 @@ AMyAIController::AMyAIController()
 
 void AMyAIController::OnPossess(APawn* InPawn)
 {
+	Super::OnPossess(InPawn);
+	if (RunBehaviorTree(BehaviorTree))
+	{
+		UE_LOG(LogTemp, Log, TEXT("Run Behavior Tree"));
+	}
 }
 
 void AMyAIController::OnUnPossess()
 {
+	Super::OnUnPossess();
 }
