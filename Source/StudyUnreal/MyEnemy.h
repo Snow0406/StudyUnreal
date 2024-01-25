@@ -10,20 +10,26 @@ UCLASS()
 class STUDYUNREAL_API AMyEnemy : public ACharacter
 {
 	GENERATED_BODY()
+private:
+	bool IsAttacking = false;
+	UPROPERTY(VisibleAnywhere)
+	class UEnemyAnimInstance* EnemyAnimInstance;
 
 public:
-	// Sets default values for this character's properties
+	bool GetIsAttacking() const { return IsAttacking; }
+
+public:
 	AMyEnemy();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	void Attack();
+	UFUNCTION()
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterripted);
 };

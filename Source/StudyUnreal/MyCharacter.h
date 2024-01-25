@@ -17,6 +17,8 @@ private:
 	class UCameraComponent* Camera;
 	UPROPERTY(VisibleAnywhere)
 	class UMyAnimInstance* MyAnimInstance;
+	UPROPERTY(VisibleAnywhere)
+	class UMyActorComponent* MyActorComponent;
 
 public:
 	AMyCharacter();

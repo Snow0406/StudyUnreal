@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "MyAnimInstance.h"
 #include "Arrow.h"
+#include "MyActorComponent.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -41,6 +42,7 @@ AMyCharacter::AMyCharacter()
 	{
 		GetMesh()->SetAnimClass(AnimInstance.Class);
 	}
+	MyActorComponent = CreateDefaultSubobject<UMyActorComponent>(TEXT("MyActorComponent"));
 }
 
 void AMyCharacter::BeginPlay()
