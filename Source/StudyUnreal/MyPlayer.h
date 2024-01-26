@@ -3,35 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "MyEnemy.generated.h"
+#include "Creature.h"
+#include "MyPlayer.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class STUDYUNREAL_API AMyEnemy : public ACharacter
+class STUDYUNREAL_API AMyPlayer : public ACreature
 {
 	GENERATED_BODY()
 private:
-	bool IsAttacking = false;
-	UPROPERTY(VisibleAnywhere)
-	class UEnemyAnimInstance* EnemyAnimInstance;
 	UPROPERTY(VisibleAnywhere)
 	class UMyActorComponent* MyActorComponent;
-
 public:
-	bool GetIsAttacking() const { return IsAttacking; }
-
-public:
-	AMyEnemy();
-
+	AMyPlayer();
 protected:
 	virtual void BeginPlay() override;
-
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 public:
-	void Attack();
-	UFUNCTION()
-	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterripted);
+	virtual void Attack() override;
+	
 };

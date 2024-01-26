@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "MyAIController.h"
 #include "EnemyAnimInstance.h"
+#include "MyActorComponent.h"
 
 // Sets default values
 AMyEnemy::AMyEnemy()
@@ -26,9 +27,9 @@ AMyEnemy::AMyEnemy()
 	{
 		GetMesh()->SetAnimClass(AI.Class);
 	}
-
-
 	AIControllerClass = AMyAIController::StaticClass();
+
+	MyActorComponent = CreateDefaultSubobject<UMyActorComponent>(TEXT("MyActorComponent"));
 }
 
 // Called when the game starts or when spawned
