@@ -47,13 +47,13 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//UE_LOG(LogTemp, Warning, TEXT("MyEnemy IsAttacking : %d"), AMyCharacter::IsAttacking);
 
 }
 
@@ -94,6 +94,11 @@ void AMyCharacter::MouseLookUpDown(float value)
 void AMyCharacter::Attack()
 {
 	Super::Attack();
+}
+
+void AMyCharacter::OnHit()
+{
+	Super::OnHit();
 
 	if (IsValid(CreatureAnimInstance))
 	{
@@ -106,5 +111,4 @@ void AMyCharacter::Attack()
 
 		auto MyArrow = GetWorld()->SpawnActor<AArrow>(SocketLocation, SocketRotation, params);
 	}
-
 }

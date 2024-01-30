@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "MyActorComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnHpChange);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STUDYUNREAL_API UMyActorComponent : public UActorComponent
@@ -19,6 +21,8 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Info", Meta = (AllowPrivateAccess = true))
 	int32 Hp;
 public:
+	FOnHpChange OnHpChange;
+public:
 	int32 GetLevel() { return Level; }
 	int32 GetHp() { return Hp; }
 public:	
@@ -31,5 +35,7 @@ protected:
 public:
 	void SetLevel(int32 Lv);
 	void OnDamaged(float DamageAmount);
+	void SetHp(int32 NewHp);
+	float GetHpRatio();
 
 };

@@ -17,15 +17,16 @@ protected:
 	class UMyActorComponent* MyActorComponent;
 	UPROPERTY(VisibleAnywhere)
 	class UCreatureAnim* CreatureAnimInstance;
+	UPROPERTY(VisibleAnywhere)
+	class UWidgetComponent* HpBar;
 public:
 	ACreature();
 protected:
 	virtual void BeginPlay() override;
 public:
-	UFUNCTION()
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+public:
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterripted);
-	UFUNCTION()
 	virtual void Attack();
-	UFUNCTION()
-	void OnHit();
+	virtual void OnHit() {};
 };

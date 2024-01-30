@@ -5,7 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "MyAIController.h"
 #include "EnemyAnimInstance.h"
-#include "MyActorComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMyEnemy::AMyEnemy()
@@ -34,16 +34,13 @@ AMyEnemy::AMyEnemy()
 void AMyEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
-	CreatureAnimInstance->OnMontageEnded.AddDynamic(this, &AMyEnemy::OnAttackMontageEnded);
-	
 }
 
 // Called every frame
 void AMyEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	//UE_LOG(LogTemp, Warning, TEXT("MyEnemy IsAttacking : %d"), AMyEnemy::IsAttacking);
 }
 
 // Called to bind functionality to input
@@ -51,4 +48,43 @@ void AMyEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AMyEnemy::OnHit()
+{
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+
+	float AttackRange = 100.f;
+	float AttackRadius = 50.f;
+
+	bool Result = GetWorld()->SweepSingleByChannel(
+		OUT HitResult,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * AttackRange,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params
+	);
+
+	FVector Center = GetActorLocation();
+	FVector Forward = GetActorLocation() + GetActorForwardVector() * AttackRange;
+
+	float HalfHeight = AttackRange * 0.5f + AttackRange;
+	FQuat Rotation = FRotationMatrix::MakeFromZ(Forward).ToQuat();
+	FColor DrawColor;
+
+	if (Result && HitResult.GetActor())
+	{
+		DrawColor = FColor::Green;
+
+		AActor* HitActor = HitResult.GetActor();
+		UGameplayStatics::ApplyDamage(HitActor, 10.f, GetController(), NULL, NULL);
+	}
+	else
+	{
+		DrawColor = FColor::Red;
+	}
+	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 2.f);
 }

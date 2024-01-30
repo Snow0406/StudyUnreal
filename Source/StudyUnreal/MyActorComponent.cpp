@@ -45,10 +45,20 @@ void UMyActorComponent::SetLevel(int32 Lv)
 
 void UMyActorComponent::OnDamaged(float DamageAmount)
 {
-	Hp -= DamageAmount;
-	if (Hp < 0)
-	{
-		Hp = 0;
-	}
+	int32 NewHP = Hp - DamageAmount;
+	SetHp(NewHP);
+	OnHpChange.Broadcast();
 	UE_LOG(LogTemp, Warning, TEXT("HP : %d"), Hp);
+}
+
+void UMyActorComponent::SetHp(int32 NewHp)
+{
+	Hp = NewHp;
+	if (Hp < 0) Hp = 0;
+}
+
+float UMyActorComponent::GetHpRatio()
+{
+	if (MaxHp == 0 || Hp == 0) return 0.f;
+	else return (float)MaxHp / (float)Hp;
 }
