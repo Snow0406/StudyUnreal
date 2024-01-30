@@ -28,8 +28,6 @@ AMyEnemy::AMyEnemy()
 		GetMesh()->SetAnimClass(AI.Class);
 	}
 	AIControllerClass = AMyAIController::StaticClass();
-
-	MyActorComponent = CreateDefaultSubobject<UMyActorComponent>(TEXT("MyActorComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -37,8 +35,7 @@ void AMyEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	EnemyAnimInstance = Cast<UEnemyAnimInstance>(GetMesh()->GetAnimInstance());
-	EnemyAnimInstance->OnMontageEnded.AddDynamic(this, &AMyEnemy::OnAttackMontageEnded);
+	CreatureAnimInstance->OnMontageEnded.AddDynamic(this, &AMyEnemy::OnAttackMontageEnded);
 	
 }
 
@@ -55,21 +52,3 @@ void AMyEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
-void AMyEnemy::Attack()
-{
-	if (!IsAttacking)
-	{
-		IsAttacking = true;
-		if (IsValid(EnemyAnimInstance))
-		{
-			EnemyAnimInstance->PlayAttackMontage();
-		}
-	}
-}
-
-void AMyEnemy::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterripted)
-{
-	IsAttacking = false;
-}
-

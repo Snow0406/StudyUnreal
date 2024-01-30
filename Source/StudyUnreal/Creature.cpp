@@ -2,37 +2,47 @@
 
 
 #include "Creature.h"
+#include "MyActorComponent.h"
+#include "CreatureAnim.h"
 
-// Sets default values
+
 ACreature::ACreature()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+	UE_LOG(LogTemp, Log, TEXT("ACreature"));
+	MyActorComponent = CreateDefaultSubobject<UMyActorComponent>(TEXT("MyActorComponent"));
 }
 
 // Called when the game starts or when spawned
 void ACreature::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CreatureAnimInstance = Cast<UCreatureAnim>(GetMesh()->GetAnimInstance());
+	if (CreatureAnimInstance)
+	{
+		CreatureAnimInstance->OnAttackHit.AddUObject(this, &ACreature::OnHit);
+	}
 }
 
-// Called every frame
-void ACreature::Tick(float DeltaTime)
+void ACreature::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterripted)
 {
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void ACreature::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	IsAttacking = false;
 }
 
 void ACreature::Attack()
 {
+	if (!IsAttacking)
+	{
+		IsAttacking = true;
+
+		if (IsValid(CreatureAnimInstance))
+		{
+			CreatureAnimInstance->PlayAttackMontage();
+		}
+
+	}
 }
 
+void ACreature::OnHit()
+{
+	UE_LOG(LogTemp, Log, TEXT("OnHit"));
+}

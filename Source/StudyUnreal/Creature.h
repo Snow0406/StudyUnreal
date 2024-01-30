@@ -10,16 +10,22 @@ UCLASS()
 class STUDYUNREAL_API ACreature : public ACharacter
 {
 	GENERATED_BODY()
-private:
+protected:
+	UPROPERTY(VisibleAnywhere)
+	bool IsAttacking = false;
 	UPROPERTY(VisibleAnywhere)
 	class UMyActorComponent* MyActorComponent;
+	UPROPERTY(VisibleAnywhere)
+	class UCreatureAnim* CreatureAnimInstance;
 public:
 	ACreature();
 protected:
 	virtual void BeginPlay() override;
-public:	
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
+	UFUNCTION()
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterripted);
+	UFUNCTION()
 	virtual void Attack();
+	UFUNCTION()
+	void OnHit();
 };
