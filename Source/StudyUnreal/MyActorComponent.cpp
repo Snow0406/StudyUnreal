@@ -11,6 +11,7 @@ UMyActorComponent::UMyActorComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 	bWantsInitializeComponent = true;
 	Level = 1;
+	//SetLevel(1);
 	//UE_LOG(LogTemp, Log, TEXT("Hp : %d"), Hp);
 }
 
