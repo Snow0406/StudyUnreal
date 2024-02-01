@@ -26,7 +26,9 @@ protected:
 public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 public:
+	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterripted);
 	virtual void Attack();
+	UFUNCTION()
 	virtual void OnHit() {};
 };

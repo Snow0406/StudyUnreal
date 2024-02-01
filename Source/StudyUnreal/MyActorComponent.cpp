@@ -11,6 +11,7 @@ UMyActorComponent::UMyActorComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 	bWantsInitializeComponent = true;
 	Level = 1;
+	//UE_LOG(LogTemp, Log, TEXT("Hp : %d"), Hp);
 }
 
 
@@ -47,14 +48,14 @@ void UMyActorComponent::OnDamaged(float DamageAmount)
 {
 	int32 NewHP = Hp - DamageAmount;
 	SetHp(NewHP);
-	OnHpChange.Broadcast();
-	UE_LOG(LogTemp, Warning, TEXT("HP : %d"), Hp);
+	UE_LOG(LogTemp, Warning, TEXT("HP : %d"), NewHP);
 }
 
 void UMyActorComponent::SetHp(int32 NewHp)
 {
 	Hp = NewHp;
 	if (Hp < 0) Hp = 0;
+	OnHpChanged.Broadcast();
 }
 
 float UMyActorComponent::GetHpRatio()

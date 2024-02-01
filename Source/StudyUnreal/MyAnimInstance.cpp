@@ -5,7 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#include "MyCharacter.h"
+#include "MyPlayer.h"
 
 //void UMyAnimInstance::NativeInitializeAnimation()
 //{

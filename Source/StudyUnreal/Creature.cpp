@@ -36,6 +36,11 @@ void ACreature::BeginPlay()
 		CreatureAnimInstance->OnMontageEnded.AddDynamic(this, &ACreature::OnAttackMontageEnded);
 		CreatureAnimInstance->OnAttackHit.AddUObject(this, &ACreature::OnHit);
 	}
+	auto HpWidget = Cast<UMyUserWidget>(HpBar->GetUserWidgetObject());
+	if (HpWidget)
+	{
+		HpWidget->BindHp(MyActorComponent);
+	}
 }
 
 float ACreature::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

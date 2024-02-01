@@ -2,14 +2,14 @@
 
 
 #include "MyGameModeBase.h"
-#include "MyCharacter.h"
+#include "MyPlayer.h"
 
 AMyGameModeBase::AMyGameModeBase() {
-	static ConstructorHelpers::FClassFinder<AMyCharacter> BP_Character(TEXT("/Script/Engine.Blueprint'/Game/Blueprints/BP_MyCharacter.BP_MyCharacter_C'"));
+	static ConstructorHelpers::FClassFinder<AMyPlayer> BP_Player(TEXT("/Script/Engine.Blueprint'/Game/Blueprints/BP_MyPlayer.BP_MyPlayer_C'"));
 
 
-	if (BP_Character.Succeeded()) {
-		DefaultPawnClass = BP_Character.Class;
+	if (BP_Player.Succeeded()) {
+		DefaultPawnClass = BP_Player.Class;
 	}
 }
 

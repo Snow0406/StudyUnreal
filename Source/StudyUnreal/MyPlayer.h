@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
 #include "Creature.h"
-#include "MyCharacter.generated.h"
-
+#include "MyPlayer.generated.h"
+/**
+ * 
+ */
 UCLASS()
-class STUDYUNREAL_API AMyCharacter : public ACreature
+class STUDYUNREAL_API AMyPlayer : public ACreature
 {
 	GENERATED_BODY()
 private:
@@ -18,13 +19,9 @@ private:
 	class UCameraComponent* Camera;
 
 public:
-	AMyCharacter();
+	AMyPlayer();
 
-protected:
-	virtual void BeginPlay() override;
-
-public:	
-	virtual void Tick(float DeltaTime) override;
+public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
@@ -35,4 +32,5 @@ public:
 public:
 	virtual void Attack() override;
 	virtual void OnHit() override;
+	
 };
