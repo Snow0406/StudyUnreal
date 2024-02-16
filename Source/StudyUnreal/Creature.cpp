@@ -67,3 +67,8 @@ void ACreature::Attack()
 
 	}
 }
+
+int ACreature::GetHp()
+{
+	return MyActorComponent->GetHp();
+}

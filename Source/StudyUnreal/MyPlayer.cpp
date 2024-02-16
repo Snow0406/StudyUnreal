@@ -41,6 +41,7 @@ AMyPlayer::AMyPlayer()
 	{
 		GetMesh()->SetAnimClass(AnimInstance.Class);
 	}
+	
 }
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

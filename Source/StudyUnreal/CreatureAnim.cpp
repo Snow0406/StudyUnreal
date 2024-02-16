@@ -28,12 +28,13 @@ void UCreatureAnim::NativeBeginPlay()
 	auto Pawn = TryGetPawnOwner();
 	if (IsValid(Pawn))
 	{
-		Character = Cast<ACharacter>(Pawn);
+		Character = Cast<ACreature>(Pawn);
 		if (IsValid(Character))
 		{
 			CharacterMovement = Character->GetCharacterMovement();
 		}
 	}
+	OnDeath = false;
 }
 
 void UCreatureAnim::NativeUpdateAnimation(float DeltaSeconds)
@@ -44,5 +45,10 @@ void UCreatureAnim::NativeUpdateAnimation(float DeltaSeconds)
 		Velocity = CharacterMovement->Velocity;
 		FRotator Rotation = Character->GetActorRotation();
 		Speed = Velocity.Size2D();
+
+		if (Character->GetHp() <= 0 && !OnDeath)
+		{
+			OnDeath = true;
+		}
 	}
 }

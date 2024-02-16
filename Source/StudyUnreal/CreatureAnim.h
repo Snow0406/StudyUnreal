@@ -22,9 +22,11 @@ protected:
 	bool ShouldMove;
 	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	FVector Velocity;
+	UPROPERTY(Category = "Animation", Editanywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	bool OnDeath;
 public:
 	UPROPERTY(VisibleAnywhere)
-	class ACharacter* Character;
+	class ACreature* Character;
 	UPROPERTY(VisibleAnywhere)
 	class UCharacterMovementComponent* CharacterMovement;
 	UPROPERTY(VisibleAnywhere)
